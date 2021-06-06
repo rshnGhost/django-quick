@@ -67,8 +67,8 @@ def registerApp(projName, appName):#
 if __name__ == '__main__':
     touch('Pipfile')
     installRequirments()
-    #install('django')
-    #install('django-sslserver')
+    install('django')
+    install('django-sslserver')
     createProject('main')
     registerApp('main', 'sslserver')
     createApp('main', 'dataStorage')
