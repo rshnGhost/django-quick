@@ -7,11 +7,13 @@ def touch(file, content=""):
 
 def installRequirments():#python -m pipenv install -r requirments.txt
     subprocess.run(['python', '-m', 'pipenv', 'install', '-r', 'requirments.txt'])
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
+    os.system("python -m pipenv run pip freeze > requirments.txt")
+    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
 
 def install(package):#python -m pipenv install <name(s)>
     subprocess.run(['python', '-m', 'pipenv', 'install', package])
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
+    os.system("python -m pipenv run pip freeze > requirments.txt")
+    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
 
 def createProject(name):#python -m pipenv run django-admin startproject <name>
     subprocess.run(['python', '-m', 'pipenv', 'run', 'django-admin', 'startproject', name])
@@ -64,11 +66,30 @@ def registerApp(projName, appName):#
         fp.writelines(lines)
     #print(os.getcwd())
 
+def makeFolder(folderName):#
+    os.mkdir(folderName)
+
+def setup():#
+    subprocess.run(['python', '-m', 'pipenv', 'sync'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'makemigrations'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'migrate'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'collectstatic'])
+    print('Enter following details for root user')
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'createsuperuser'])
+
 if __name__ == '__main__':
     touch('Pipfile')
     installRequirments()
-    install('django')
-    install('django-sslserver')
+    #install('django')
+    #install('django-sslserver')
     createProject('main')
     registerApp('main', 'sslserver')
     createApp('main', 'dataStorage')
+    makeFolder('src\media')
+    makeFolder('src\static')
+    makeFolder('src\credentials')
+    touch('src\credentials\credentials.py', 'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "required",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
+    print('Enter credentials in src\credentials\credentials.py')
+    os.system("notepad src\credentials\credentials.py")
+    os.system("pause")
+    setup()
