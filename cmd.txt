@@ -1,0 +1,24 @@
+main-setup.py -t Pipfile -i --package django-sslserver  --project main --cred --reg main,sslserver --app main,dataStorage --folder src\media
+
+main-setup.py -h
+main-setup.py -t Pipfile
+main-setup.py -i <<<<<<
+main-setup.py --package django-sslserver
+main-setup.py --package django-registration-redux
+main-setup.py --package django-crispy-forms
+main-setup.py --project main
+main-setup.py --cred
+main-setup.py --app main,dataStorage
+main-setup.py --reg main,dataStorage
+main-setup.py --reg main,sslserver
+main-setup.py --reg main,registration
+main-setup.py --reg main,crispy_forms
+main-setup.py --url main,dataStorage
+main-setup.py --copy temp/static,src/static
+main-setup.py --copy temp/templates,src/templates
+main-setup.py --replace  src/main/urls.py,]\n,\tpath('accounts/',include('registration.backends.simple.urls')),\n
+main-setup.py --folder src\media
+main-setup.py --setup
+main-setup.py --run 1
+
+main-setup.py --ireqfile <file_name>

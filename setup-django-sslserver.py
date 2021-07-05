@@ -5,15 +5,15 @@ def touch(file, content=""):
         fp.write(content)
         pass
 
-def installRequirments():#python -m pipenv install -r requirments.txt
-    subprocess.run(['python', '-m', 'pipenv', 'install', '-r', 'requirments.txt'])
-    os.system("python -m pipenv run pip freeze > requirments.txt")
-    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
+def installrequirements():#python -m pipenv install -r requirements.txt
+    subprocess.run(['python', '-m', 'pipenv', 'install', '-r', 'requirements.txt'])
+    os.system("python -m pipenv run pip freeze > requirements.txt")
+    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirements.txt'])
 
 def install(package):#python -m pipenv install <name(s)>
     subprocess.run(['python', '-m', 'pipenv', 'install', package])
-    os.system("python -m pipenv run pip freeze > requirments.txt")
-    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
+    os.system("python -m pipenv run pip freeze > requirements.txt")
+    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirements.txt'])
 
 def createProject(name):#python -m pipenv run django-admin startproject <name>
     subprocess.run(['python', '-m', 'pipenv', 'run', 'django-admin', 'startproject', name])
@@ -61,7 +61,7 @@ def registerApp(projName, appName):#
         lines = fp.readlines()
     indexS = lines.index('INSTALLED_APPS = [\n')
     indexE = lines.index(']\n')
-    lines[indexE] = "    '"+appName+"',\n"+lines[indexE]
+    lines[indexE] = "\t'"+appName+"',\n"+lines[indexE]
     with open('src/'+projName+'/settings.py', 'w') as fp:
         fp.writelines(lines)
     #print(os.getcwd())
@@ -77,16 +77,79 @@ def setup():#
     print('Enter following details for root user')
     subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'createsuperuser'])
 
+def setupUrl(name, appName):
+    lines = []
+    with open('src/'+name+'/urls.py', 'r') as fp:
+        lines = fp.readlines()
+
+    #index = lines.index("urlpatterns = [\n")
+    #lines[index] = "\nfrom "+appName+" import urls\n\n"+lines[index]
+    index = lines.index("]\n")
+    lines[index] = "\tpath('', include('"+appName+".urls')),\n"+lines[index]
+
+    index = lines.index("urlpatterns = [\n")
+    lines[index] = "\nfrom django.conf.urls import include\n"+lines[index]
+
+    with open('src/'+name+'/urls.py', 'w') as fp:
+        fp.writelines(lines)
+
+    lines = ["from django.urls import path",
+            "\nfrom . import views",
+            "\nfrom django.contrib.auth.decorators import login_required",
+            "\napp_name = 'dataStorage'",
+            "\nurlpatterns = [",
+            "\n\t#path('/', login_required(iViews.familyList.as_view()), name='familyList'),",
+            "\n\tpath('', views.home, name='home'),",
+            "\n]"]
+    with open('src/'+appName+'/urls.py', 'w') as fp:
+        fp.writelines(lines)
+
+    lines = ["from django.shortcuts import render",
+    "\nfrom django.contrib import messages",
+    "\nfrom django.urls import reverse, get_resolver",
+    "\nfrom django.views.decorators.csrf import csrf_exempt",
+    "\nfrom django.contrib.auth.decorators import login_required",
+    "\n@login_required",
+    "\ndef home(request):",
+    "\n\tcontext = {}",
+    "\n\tmessages.info(request, 'Information')",
+    "\n\tmessages.success(request, 'Successful')",
+    "\n\tmessages.warning(request, 'Warning')",
+    "\n\treturn render(request, 'home.html', context)"]
+
+    with open('src/'+appName+'/views.py', 'w') as fp:
+        fp.writelines(lines)
+
+def findReplaceAt(location, search, replace):
+    lines = []
+    with open(location, 'r') as fp:
+        lines = fp.readlines()
+
+    index = lines.index(search)
+    lines[index] = replace + lines[index]
+
+    with open(location, 'w') as fp:
+        fp.writelines(lines)
+
 if __name__ == '__main__':
     touch('Pipfile')
-    installRequirments()
-    #install('django')
-    #install('django-sslserver')
+    installrequirements()
+    install('django')
+    install('django-sslserver')
+    install('django-registration-redux')
+    install('django-crispy-forms')
     createProject('main')
     registerApp('main', 'sslserver')
+    registerApp('main', 'registration')
+    findReplaceAt('src/main/urls.py', "]\n", "\tpath('accounts/', include('registration.backends.simple.urls')),\n")
+    registerApp('main', 'crispy_forms')
     createApp('main', 'dataStorage')
+    setupUrl('main', 'dataStorage')
     makeFolder('src\media')
-    makeFolder('src\static')
+    #makeFolder('src\static')
+    import shutil
+    dest = shutil.copytree('temp/static', 'src/static')#, copy_function = shutil.copytree)
+    dest = shutil.copytree('temp/templates', 'src/templates')#, copy_function = shutil.copytree)
     makeFolder('src\credentials')
     touch('src\credentials\credentials.py', 'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "required",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
     print('Enter credentials in src\credentials\credentials.py')

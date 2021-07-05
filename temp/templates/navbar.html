@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap"></i>eSpace</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'dataStorage:home' %}"><i class="fas fa-home"></i> Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/rshnGhost/eSpace"><i class="fab fa-github"></i> Get This Code</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact"><i class="fas fa-phone fa-flip-horizontal"></i> Contact</a>
+        </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+        {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+        <form class="form-inline mt-2 mt-md-0" action="{% url 'auth_login' %}" method="post">
+          {% csrf_token %}
+          <input class="form-control mr-sm-2" type="text" name="username" value="">
+          <input class="form-control mr-sm-2" type="password" name="password" value="">
+          <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Login">
+        </form>
+        {% endif %}
+        </li>
+        {% if request.user.is_authenticated and user %}
+        <li class="nav-item active">
+          <a {% if request.user.is_staff %}href="{% url 'admin:index' %}"{% endif %} class="nav-link">{{ user }}<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'auth_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'registration_register' %}"><i class="fas fa-user-plus"></i> Register</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div><!--/.nav-collapse -->
+</nav>

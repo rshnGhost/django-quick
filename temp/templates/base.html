@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+	<head>{% load static %}
+		{% block stylesheet %}{% endblock stylesheet %}
+		<link rel="stylesheet" href="{% static 'css/navbar-static-top.css' %}">
+		<link rel="stylesheet" href="{% static 'css/navbar-top.css' %}">
+		<link rel="stylesheet" href='{% static "css/bootstrap.css" %}' type="text/css"/>
+		<link rel="stylesheet" href='{% static "css/all.css" %}' type="text/css"/>
+		<link rel="stylesheet" href='{% static "css/animate.css" %}' type="text/css"/>
+		<link rel="shortcut icon" href="{% static 'images/favicon.ico' type='image/x-icon' %}">
+		<style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+		{% block javascript %}{% endblock javascript %}
+		<script type="text/javascript" src='{% static "javascript/jquery.js" %}'></script>
+    <script type="text/javascript" src='{% static "javascript/bootstrap.js" %}'></script>
+    <script type="text/javascript" src='{% static "javascript/bootstrap-notify.js" %}'></script>
+		{% if messages %}
+		<script>
+			$(document).ready(function() {
+				{% for message in messages %}
+					$.notify('{{ message }}',
+						{
+							type: '{{ message.tags }}',
+							placement: {
+								from: "top",
+								align: "center"
+							},
+							delay: 5000,
+							animate: {
+								enter: "animate__animated animate__flipInX",
+								exit: "animate__animated animate__fadeOutUp"
+							},
+						});
+				{% endfor %}
+			});
+		</script>
+		{% endif %}
+		<title>{% block title %}eSpace{% endblock title %}</title>
+	</head>
+	<body id="body" {% block bodyTag %}{% endblock bodyTag %}>
+		{% block javascriptEnd %}{% endblock javascriptEnd %}
+		{% include 'navbar.html' %}
+    <main role="main" class="container">
+			{% block content %}{% endblock content %}
+		</main>
+		<footer class="text-muted fixed-bottom">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 offset-sm-4">
+					<p><i class="far fa-copyright"></i> eSpace&nbsp;&nbsp;<a href="privacy.html">Privacy Policy</a>
+					<a href="terms.html">Terms and Conditions</a></p>
+				</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

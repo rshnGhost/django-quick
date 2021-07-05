@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block stylesheet %}
+  {% load webpush_notifications %}
+  {% webpush_header %}
+{% endblock stylesheet %}
+
+{% block content %}
+<h1>Welcome, {{ request.user.username }}</h1>
+{% webpush_button with_class="btn btn-outline-info" %}
+{% endblock content %}
