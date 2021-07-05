@@ -72,7 +72,7 @@ def main(argv):
                                     "hti:p:c:a:r:f:s:",
                                     ["touch=","ireqfile=","package=","project=",
                                     "cred","app=","reg=","folder=","move=","setup",
-                                    "run=","copy=","url=","replace="]
+                                    "run=","copy=","url=","replace=","secure="]
                                     )
     except getopt.GetoptError:
         help()
@@ -94,7 +94,7 @@ def main(argv):
             createProject(arg)
         elif opt == "--cred":
             makeFolder("src\credentials")
-            touch("src\credentials\credentials.py",'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "required",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
+            touch("src\credentials\credentials.py",'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "V6%Rp+buCDMQca!&pmJ8W9&AcjJ!+W^HQEGvhTz@hGPejKtuUQ",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
             print("created")
         elif opt in ("-a", "--app"):
             if arg.find(',') >= 0:
@@ -129,6 +129,13 @@ def main(argv):
             folderVar.append(arg)
         elif opt in ("-s", "--setup"):
             setup()
+        elif opt == "--secure":
+            secure(arg)
+            try:
+                findReplaceAt('src/'+arg+'/settings.py', "DEBUG = True\n", "DEBUG = False\n", 1)
+                findReplaceAt('src/'+arg+'/settings.py', "ALLOWED_HOSTS = []\n", "ALLOWED_HOSTS = ['*']\n", 1)
+            except:
+                pass
         elif opt == "--run":
             if(arg =="0" or arg == '1'):
                 run(arg)

@@ -128,7 +128,16 @@ def setupUrl(name, appName):
     with open('src/'+appName+'/views.py', 'w') as fp:
         fp.writelines(lines)
 
-def findReplaceAt(location, search, replace):
+def secure(name):
+    lines = []
+    with open('src/'+name+'/settings.py', 'r') as fp:
+        lines = fp.readlines()
+    lines[-1] = lines[-1]+"\nSECURE_HSTS_SECONDS = 10\nSECURE_SSL_REDIRECT = True\nSESSION_COOKIE_SECURE = True\n"
+    lines[-1] = lines[-1]+"CSRF_COOKIE_SECURE = True\nSECURE_HSTS_INCLUDE_SUBDOMAINS = True\nSECURE_HSTS_PRELOAD = True"
+    with open('src/'+name+'/settings.py', 'w') as fp:
+        fp.writelines(lines)
+
+def findReplaceAt(location, search, replace, option=0):
     lines = []
     search = search.replace("\\n", "\n")
     search = search.replace("\\t", "\t")
@@ -136,9 +145,12 @@ def findReplaceAt(location, search, replace):
     replace = replace.replace("\\t", "\t")
     with open(location, 'r') as fp:
         lines = fp.readlines()
-
-    index = lines.index(search)
-    lines[index] = replace + lines[index]
+    if option == 0:
+        index = lines.index(search)
+        lines[index] = replace + lines[index]
+    elif option == 1:
+        index = lines.index(search)
+        lines[index] = replace
 
     with open(location, 'w') as fp:
         fp.writelines(lines)
