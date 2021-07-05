@@ -1,23 +1,24 @@
-main-setup.py -t Pipfile -i --package django-sslserver  --project main --cred --reg main,sslserver --app main,dataStorage --folder src\media
+python main-setup.py --help
+python main-setup.py --install requirments.txt
+python main-setup.py --touch Pipfile
+python main-setup.py --package django-sslserver
+python main-setup.py --package django-registration-redux
+python main-setup.py --package django-crispy-forms
+python main-setup.py --project main
+python main-setup.py --cred
+python main-setup.py --app main,dataStorage
+python main-setup.py --reg main,dataStorage
+python main-setup.py --reg main,sslserver
+python main-setup.py --reg main,registration
+python main-setup.py --reg main,crispy_forms
+python main-setup.py --url main,dataStorage
+python main-setup.py --copy temp/static,src/static
+python main-setup.py --copy temp/templates,src/templates
+python main-setup.py --replace  src/main/urls.py,]\n,\tpath('accounts/',include('registration.backends.simple.urls')),\n
+python main-setup.py --folder src\media
+python main-setup.py --package whitenoise
+python main-setup.py --package gunicorn
+python main-setup.py --heroku main,python-3.9.5
+python main-setup.py --setup --secure main --run 1
 
-main-setup.py -h
-main-setup.py -t Pipfile
-main-setup.py --package django-sslserver
-main-setup.py --package django-registration-redux
-main-setup.py --package django-crispy-forms
-main-setup.py --project main
-main-setup.py --cred
-main-setup.py --app main,dataStorage
-main-setup.py --reg main,dataStorage
-main-setup.py --reg main,sslserver
-main-setup.py --reg main,registration
-main-setup.py --reg main,crispy_forms
-main-setup.py --url main,dataStorage
-main-setup.py --copy temp/static,src/static
-main-setup.py --copy temp/templates,src/templates
-main-setup.py --replace  src/main/urls.py,]\n,\tpath('accounts/',include('registration.backends.simple.urls')),\n
-main-setup.py --folder src\media
-main-setup.py --setup --secure main --run 1
-
-main-setup.py -i requirments.txt
-main-setup.py --ireqfile <file_name>
+python main-setup.py --ireqfile <file_name>
