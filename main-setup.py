@@ -77,7 +77,7 @@ def main(argv):
     except getopt.GetoptError:
         help()
         sys.exit(2)
-    print(len(opts))
+    #print(len(opts))
     for opt, arg in opts:
         if opt == '-h':
             help()
@@ -118,7 +118,7 @@ def main(argv):
             second = str2.find(',')
             search_string = str2[:second]
             replace_string = str2[second+1:]
-            print(file_path, search_string, replace_string)
+            #print(file_path, search_string, replace_string)
             findReplaceAt(file_path, search_string, replace_string)
         elif opt in ("-r", "--reg"):
             if arg.find(',') >= 0:
