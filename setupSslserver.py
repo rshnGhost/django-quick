@@ -166,6 +166,26 @@ def setupHeroku(name, ver=""):
         touch('runtime.txt', ver)
     findReplaceAt('src/'+name+'/settings.py', "    'django.middleware.security.SecurityMiddleware',\n", "\t'whitenoise.middleware.WhiteNoiseMiddleware',\n", 0)
 
+def clean():
+    for (dirpath, dirnames, filenames) in os.walk("src"):
+        for filename in filenames:
+            if filename.endswith('.py'):
+                url = os.sep.join([dirpath, filename])
+                try:
+                    lines = []
+                    with open(url, 'r') as fp:
+                        lines = fp.readlines()
+                        frm = lines.index('"""\n')
+                        if frm >= 0:
+                            to = lines[frm+1:].index('"""\n')
+                    lines = lines[to+2:]
+
+                    with open(url, 'w') as fp:
+                        fp.writelines(lines)
+                        print(url)
+                except:
+                    pass
+
 if __name__ == '__main__':
     touch('Pipfile')
     installRequirments()
@@ -192,3 +212,4 @@ if __name__ == '__main__':
     os.system("pause")
     setup()
     setupHeroku('main')
+    clean()

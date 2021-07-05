@@ -19,6 +19,7 @@ python main-setup.py --folder src\media
 python main-setup.py --package whitenoise
 python main-setup.py --package gunicorn
 python main-setup.py --heroku main,python-3.9.5
+python main-setup.py --clean
 python main-setup.py --setup --secure main --run 1
 
 python main-setup.py --ireqfile <file_name>

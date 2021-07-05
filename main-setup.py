@@ -11,7 +11,7 @@ def help():
     \n\t[--ireqfile <file_name>] [--package <package_name>] [--project <project_name>] [--cred]\
     \n\t[--app <application_name>] [--reg <project_name>,<application_name>] [--url <project_name>,<application_name>]\
     \n\t[--copy <source>,<destination>] [--replace <file_path>,<search_string>,<replace_string>] [--folder <folder_path>]\
-    \n\t[--setup] [--run <option{0, 1}>] [--heroku <project_name>,<specfic_version>]")
+    \n\t[--setup] [--run <option{0, 1}>] [--heroku <project_name>,<specfic_version>] [--clean]")
     file_name = os.path.basename(__file__)
     d = {
         "Help": [file_name+" --help", "", ""],
@@ -29,7 +29,8 @@ def help():
         "Create Folder": [file_name+" --folder", "<folder_path>", ""],
         "Run Setup": [file_name+" --setup", "", ""],
         "Run Server": [file_name+" --run", "<option{0, 1}>", ""],
-        "Setup for Heroku": [file_name+" --heroku", "<project_name>",",<specfic_version>"]
+        "Setup for Heroku": [file_name+" --heroku", "<project_name>",",<specfic_version>"],
+        "Remove comments": [file_name+" --clean", "", ""]
     }
     print("{:<46} {:<24} {:<44} {:<6}".format('Action','Usage','Argument','Optional Argument'))
     for action, help in d.items():
@@ -53,6 +54,7 @@ def help():
     print("Run Setup:\t  "+os.path.basename(__file__)+" --setup")
     print("Setup for Heroku:\t  "+os.path.basename(__file__)+" --heroku <project_name> ,<specfic_version>")
     print("Run Server:\t  "+os.path.basename(__file__)+" --run <option>")
+    print("Remove comments:\t  "+os.path.basename(__file__)+" --clean")
     '''
 
 def main(argv):
@@ -60,7 +62,7 @@ def main(argv):
         opts, args = getopt.getopt(argv,"",
                                     ["help","install","touch=","ireqfile=","package=","project=",
                                     "cred","app=","reg=","folder=","move=","setup",
-                                    "run=","copy=","url=","replace=","secure=","heroku="]
+                                    "run=","copy=","url=","replace=","secure=","heroku=","clean"]
                                     )
     except getopt.GetoptError:
         help()
@@ -133,6 +135,8 @@ def main(argv):
                 ver = arg[arg.find(',')+1:]
                 arg = arg[:arg.find(',')]
             setupHeroku(arg, ver)
+        elif opt == "--clean":
+            clean()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
