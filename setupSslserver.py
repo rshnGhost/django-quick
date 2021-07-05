@@ -155,6 +155,17 @@ def findReplaceAt(location, search, replace, option=0):
     with open(location, 'w') as fp:
         fp.writelines(lines)
 
+def setupHeroku(name, ver=""):
+    touch('Procfile', 'web: gunicorn --pythonpath src '+name+'.wsgi --log-file -')
+    if ver == "":
+        import platform
+        version = str(platform.python_version())
+        version = "python-"+version
+        touch('runtime.txt', version)
+    else:
+        touch('runtime.txt', ver)
+    findReplaceAt('src/'+name+'/settings.py', "    'django.middleware.security.SecurityMiddleware',\n", "\t'whitenoise.middleware.WhiteNoiseMiddleware',\n", 0)
+
 if __name__ == '__main__':
     touch('Pipfile')
     installRequirments()
@@ -180,3 +191,4 @@ if __name__ == '__main__':
     os.system("notepad src\credentials\credentials.py")
     os.system("pause")
     setup()
+    setupHeroku('main')

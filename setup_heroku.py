@@ -15,13 +15,8 @@ def setup(name):
     lines = []
     with open('src/'+name+'/settings.py', 'r') as fp:
         lines = fp.readlines()
-
     index = lines.index("    'django.middleware.security.SecurityMiddleware',\n")
-    lines[index] = "    'django.middleware.security.SecurityMiddleware',\n    'whitenoise.middleware.WhiteNoiseMiddleware',\n"
-
-    #index = lines.index("DEBUG = True\n")
-    #lines[index+2] = "ALLOWED_HOSTS = ["+hostName+"]"
-
+    lines[index] = lines[index]+"\t'whitenoise.middleware.WhiteNoiseMiddleware',\n"
     with open('src/'+name+'/settings.py', 'w') as fp:
         fp.writelines(lines)
 
