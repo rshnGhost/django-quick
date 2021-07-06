@@ -1,4 +1,2 @@
-python -m pipenv run python ..\src\manage.py makemigrations
-python -m pipenv run python ..\src\manage.py migrate
-python -m pipenv run python ..\src\manage.py runsslserver
+python main-setup.py --run 1
 pause
