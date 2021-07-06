@@ -83,8 +83,8 @@ def main(argv):
         elif opt == "--project":
             createProject(arg)
         elif opt == "--cred":
-            makeFolder("src\credentials")
-            touch("src\credentials\credentials.py",'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "V6%Rp+buCDMQca!&pmJ8W9&AcjJ!+W^HQEGvhTz@hGPejKtuUQ",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
+            makeFolder(os.path.join("src", "credentials"))
+            touch(os.path.join("src", "credentials","credentials.py"),'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "V6%Rp+buCDMQca!&pmJ8W9&AcjJ!+W^HQEGvhTz@hGPejKtuUQ",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
             print("created")
         elif opt == "--app":
             if arg.find(',') >= 0:
@@ -94,7 +94,11 @@ def main(argv):
         elif opt == "--copy":
             if arg.find(',') >= 0:
                 src = arg[:arg.find(',')]
+                srclist = src.split('/')
+                src = os.path.join(*srclist)
                 dest = arg[arg.find(',')+1:]
+                destlist = dest.split('/')
+                dest = os.path.join(*destlist)
                 shutil.copytree(src, dest)#, copy_function = shutil.copytree)
         elif opt == "--url":
             if arg.find(',') >= 0:
@@ -104,6 +108,8 @@ def main(argv):
         elif opt == "--replace":
             first = arg.find(',')
             file_path = arg[:first]
+            file_path = file_path.split('/')
+            file_path = os.path.join(*file_path)
             str2 = arg[first+1:]
             second = str2.find(',')
             search_string = str2[:second]
@@ -122,8 +128,8 @@ def main(argv):
         elif opt == "--secure":
             secure(arg)
             try:
-                findReplaceAt('src/'+arg+'/settings.py', "DEBUG = True\n", "DEBUG = False\n", 1)
-                findReplaceAt('src/'+arg+'/settings.py', "ALLOWED_HOSTS = []\n", "ALLOWED_HOSTS = ['*']\n", 1)
+                findReplaceAt(os.path.join("src", arg, "settings.py"), "DEBUG = True\n", "DEBUG = False\n", 1)
+                findReplaceAt(os.path.join("src", arg, "settings.py"), "ALLOWED_HOSTS = []\n", "ALLOWED_HOSTS = ['*']\n", 1)
             except:
                 pass
         elif opt == "--run":
@@ -151,6 +157,8 @@ if __name__ == "__main__":
         install(package)
 
     for folderName in folderVar:
+        folderName = folderName.split('/')
+        folderName = os.path.join(*folderName)
         makeFolder(folderName)
 
 #import getopt

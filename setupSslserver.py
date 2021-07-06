@@ -28,9 +28,9 @@ def install(package):#python -m pipenv install <name(s)>
 def createProject(name):#python -m pipenv run django-admin startproject <name>
     subprocess.run(['python', '-m', 'pipenv', 'run', 'django-admin', 'startproject', name])
     os.rename(name, 'src')
-    touch('src/'+name+'/password.py', content="from credentials.credentials import credentials\n\ndef fetch(argument):\n    return credentials.get(argument)")
+    touch(os.path.join("src", name, "password.py"), content="from credentials.credentials import credentials\n\ndef fetch(argument):\n    return credentials.get(argument)")
     lines = []
-    with open('src/'+name+'/settings.py', 'r') as fp:
+    with open(os.path.join("src", name, "settings.py"), 'r') as fp:
         lines = fp.readlines()
     index = lines.index('from pathlib import Path\n')
     lines[index] = "import os, sys\nfrom pathlib import Path\nfrom .password import fetch\n"
@@ -47,7 +47,7 @@ def createProject(name):#python -m pipenv run django-admin startproject <name>
     index = lines.index("STATIC_URL = '/static/'\n")
     lines[index] = "STATIC_URL = '/static/'\nMEDIA_URL = '/media/'\nSTATICFILES_DIRS = [\n	BASE_DIR / 'static',\n	BASE_DIR / 'media',\n]\nSTATIC_ROOT = ROOT_DIR / 'Files/staticFile'\nMEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n"
 
-    with open('src/'+name+'/settings.py', 'w') as fp:
+    with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
 
 def createApp(projName, appName):#python -m pipenv run django-admin startapp <name>
@@ -59,12 +59,12 @@ def createApp(projName, appName):#python -m pipenv run django-admin startapp <na
 def registerApp(projName, appName):#
     #os.chdir('src\'+projName)
     lines = []
-    with open('src/'+projName+'/settings.py', 'r') as fp:
+    with open(os.path.join("src", projName, "settings.py"), 'r') as fp:
         lines = fp.readlines()
     indexS = lines.index('INSTALLED_APPS = [\n')
     indexE = lines.index(']\n')
     lines[indexE] = "\t'"+appName+"',\n"+lines[indexE]
-    with open('src/'+projName+'/settings.py', 'w') as fp:
+    with open(os.path.join("src", projName, "settings.py"), 'w') as fp:
         fp.writelines(lines)
     #print(os.getcwd())
 
@@ -87,7 +87,7 @@ def run(option):
 
 def setupUrl(name, appName):
     lines = []
-    with open('src/'+name+'/urls.py', 'r') as fp:
+    with open(os.path.join("src", name, "urls.py"), 'r') as fp:
         lines = fp.readlines()
 
     #index = lines.index("urlpatterns = [\n")
@@ -98,7 +98,7 @@ def setupUrl(name, appName):
     index = lines.index("urlpatterns = [\n")
     lines[index] = "\nfrom django.conf.urls import include\n"+lines[index]
 
-    with open('src/'+name+'/urls.py', 'w') as fp:
+    with open(os.path.join("src", name, "urls.py"), 'w') as fp:
         fp.writelines(lines)
 
     lines = ["from django.urls import path",
@@ -109,7 +109,7 @@ def setupUrl(name, appName):
             "\n\t#path('/', login_required(iViews.familyList.as_view()), name='familyList'),",
             "\n\tpath('', views.home, name='home'),",
             "\n]"]
-    with open('src/'+appName+'/urls.py', 'w') as fp:
+    with open(os.path.join("src", appName, "urls.py"), 'w') as fp:
         fp.writelines(lines)
 
     lines = ["from django.shortcuts import render",
@@ -125,16 +125,16 @@ def setupUrl(name, appName):
     "\n\tmessages.warning(request, 'Warning')",
     "\n\treturn render(request, 'home.html', context)"]
 
-    with open('src/'+appName+'/views.py', 'w') as fp:
+    with open(os.path.join("src", appName, "views.py"), 'w') as fp:
         fp.writelines(lines)
 
 def secure(name):
     lines = []
-    with open('src/'+name+'/settings.py', 'r') as fp:
+    with open(os.path.join("src", name, "settings.py"), 'r') as fp:
         lines = fp.readlines()
     lines[-1] = lines[-1]+"\nSECURE_HSTS_SECONDS = 10\nSECURE_SSL_REDIRECT = True\nSESSION_COOKIE_SECURE = True\n"
     lines[-1] = lines[-1]+"CSRF_COOKIE_SECURE = True\nSECURE_HSTS_INCLUDE_SUBDOMAINS = True\nSECURE_HSTS_PRELOAD = True"
-    with open('src/'+name+'/settings.py', 'w') as fp:
+    with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
 
 def findReplaceAt(location, search, replace, option=0):
@@ -164,7 +164,7 @@ def setupHeroku(name, ver=""):
         touch('runtime.txt', version)
     else:
         touch('runtime.txt', ver)
-    findReplaceAt('src/'+name+'/settings.py', "    'django.middleware.security.SecurityMiddleware',\n", "\t'whitenoise.middleware.WhiteNoiseMiddleware',\n", 0)
+    findReplaceAt(os.path.join("src", name, "settings.py"), "    'django.middleware.security.SecurityMiddleware',\n", "\t'whitenoise.middleware.WhiteNoiseMiddleware',\n", 0)
 
 def clean():
     for (dirpath, dirnames, filenames) in os.walk("src"):
@@ -196,19 +196,19 @@ if __name__ == '__main__':
     createProject('main')
     registerApp('main', 'sslserver')
     registerApp('main', 'registration')
-    findReplaceAt('src/main/urls.py', "]\n", "\tpath('accounts/', include('registration.backends.simple.urls')),\n")
+    findReplaceAt(os.path.join("src", "main", "urls.py"), "]\n", "\tpath('accounts/', include('registration.backends.simple.urls')),\n")
     registerApp('main', 'crispy_forms')
     createApp('main', 'dataStorage')
     setupUrl('main', 'dataStorage')
-    makeFolder('src\media')
-    makeFolder('src\static')
+    makeFolder(os.path.join("src", "media"))
+    makeFolder(os.path.join("src", "static"))
     import shutil
-    dest = shutil.copytree('temp/static', 'src/static')#, copy_function = shutil.copytree)
-    dest = shutil.copytree('temp/templates', 'src/templates')#, copy_function = shutil.copytree)
-    makeFolder('src\credentials')
-    touch('src\credentials\credentials.py', 'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "required",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
-    print('Enter credentials in src\credentials\credentials.py')
-    os.system("notepad src\credentials\credentials.py")
+    dest = shutil.copytree(os.path.join("temp", "static"), os.path.join("src", "static"))#, copy_function = shutil.copytree)
+    dest = shutil.copytree(os.path.join("temp", "templates"), os.path.join("temp", "templates"))#, copy_function = shutil.copytree)
+    makeFolder(os.path.join("src", "credentials"))
+    touch(os.path.join("src", "credentials", "credentials.py"), 'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "required",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
+    print('Enter credentials in '+os.path.join("src", "credentials", "credentials.py"))
+    os.system("notepad "+os.path.join("src", "credentials", "credentials.py"))
     os.system("pause")
     setup()
     setupHeroku('main')

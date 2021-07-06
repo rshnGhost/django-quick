@@ -13,11 +13,11 @@ def install(package):#python -m pipenv install <name(s)>
 def setup(name):
     touch('Procfile', 'web: gunicorn --pythonpath src '+name+'.wsgi --log-file -')
     lines = []
-    with open('src/'+name+'/settings.py', 'r') as fp:
+    with open(os.path.join("src", name, "settings.py"), 'r') as fp:
         lines = fp.readlines()
     index = lines.index("    'django.middleware.security.SecurityMiddleware',\n")
     lines[index] = lines[index]+"\t'whitenoise.middleware.WhiteNoiseMiddleware',\n"
-    with open('src/'+name+'/settings.py', 'w') as fp:
+    with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
 
 
