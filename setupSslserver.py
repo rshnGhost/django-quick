@@ -73,17 +73,17 @@ def makeFolder(folderName):#
 
 def setup():#
     subprocess.run(['python', '-m', 'pipenv', 'sync'])
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'makemigrations'])
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'migrate'])
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'collectstatic'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'makemigrations'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'migrate'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'collectstatic'])
     print('Enter following details for root user')
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'createsuperuser'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser'])
 
 def run(option):
     if option == "0":
-        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'runserver'])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runserver'])
     elif option == "1":
-        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', 'src\manage.py', 'runsslserver'])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runsslserver'])
 
 def setupUrl(name, appName):
     lines = []
@@ -183,7 +183,7 @@ def clean():
 
                     with open(url, 'w') as fp:
                         fp.writelines(lines)
-                        print(url)
+                        #print(url)
                 except:
                     pass
 

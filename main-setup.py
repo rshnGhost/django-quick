@@ -85,7 +85,6 @@ def main(argv):
         elif opt == "--cred":
             makeFolder(os.path.join("src", "credentials"))
             touch(os.path.join("src", "credentials","credentials.py"),'credentials = {\n\t"email_username" : "optional",\n\t"email_password" : "optional",\n\t"postgresql_name" : "optional",\n\t"postgresql_username" : "optional",\n\t"postgresql_password" : "optional",\n\t"postgresql_host" : "optional",\n\t"postgresql_port" : "optional",\n\t"secret_key" : "V6%Rp+buCDMQca!&pmJ8W9&AcjJ!+W^HQEGvhTz@hGPejKtuUQ",\n\t"consumer_key" : "optional",\n\t"consumer_secret" : "optional",\n\t"access_token" : "optional",\n\t"access_token_secret" : "optional",\n}')
-            print("created")
         elif opt == "--app":
             if arg.find(',') >= 0:
                 proj = arg[:arg.find(',')]
