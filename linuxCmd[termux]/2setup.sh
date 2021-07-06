@@ -1,3 +1,4 @@
+cd ..
 python main-setup.py --touch Pipfile
 python main-setup.py --install requirments.txt
 python main-setup.py --project main
