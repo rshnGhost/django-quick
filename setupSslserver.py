@@ -181,8 +181,12 @@ def clean():
                     with open(url, 'r') as fp:
                         lines = fp.readlines()
                         frm = lines.index('"""\n')
-                        if frm >= 0:
+                        if frm == 0:
                             to = lines[frm+1:].index('"""\n')
+                        else:
+                            frm = lines.index('"""main URL Configuration\n')
+                            if frm == 0:
+                                to = lines[frm+1:].index('"""\n')
                     lines = lines[to+2:]
 
                     with open(url, 'w') as fp:
