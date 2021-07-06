@@ -1,3 +1,11 @@
+src/
+Files/
+env.txt
+runtime.txt
+Pipfile
+Pipfile.lock
+Procfile
+
 bin/
 include/
 lib/
