@@ -12,6 +12,7 @@ def install(package):#python -m pipenv install <name(s)>
 
 def setup(name):
     touch('Procfile', 'web: gunicorn --pythonpath src '+name+'.wsgi --log-file -')
+    touch('env.txt', 'DISABLE_COLLECTSTATIC = 1')
     lines = []
     with open(os.path.join("src", name, "settings.py"), 'r') as fp:
         lines = fp.readlines()

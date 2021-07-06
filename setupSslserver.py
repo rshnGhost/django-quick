@@ -157,6 +157,7 @@ def findReplaceAt(location, search, replace, option=0):
 
 def setupHeroku(name, ver=""):
     touch('Procfile', 'web: gunicorn --pythonpath src '+name+'.wsgi --log-file -')
+    touch('env.txt', 'DISABLE_COLLECTSTATIC = 1')
     if ver == "":
         import platform
         version = str(platform.python_version())
