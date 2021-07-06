@@ -15,4 +15,4 @@ python main-setup.py --replace src/main/urls.py,]\n,\tpath\('accounts/',include\
 python main-setup.py --folder src/media
 python main-setup.py --heroku main,python-3.9.5
 python main-setup.py --clean
-python main-setup.py --setup --secure main --run 1
+python main-setup.py --setup --secure main
