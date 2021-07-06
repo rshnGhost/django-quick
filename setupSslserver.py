@@ -141,8 +141,12 @@ def findReplaceAt(location, search, replace, option=0):
     lines = []
     search = search.replace("\\n", "\n")
     search = search.replace("\\t", "\t")
+    search = search.replace("\(", "(")
+    search = search.replace("\)", ")")
     replace = replace.replace("\\n", "\n")
     replace = replace.replace("\\t", "\t")
+    replace = replace.replace("\(", "(")
+    replace = replace.replace("\)", ")")
     with open(location, 'r') as fp:
         lines = fp.readlines()
     if option == 0:
