@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-  <a class="navbar-brand" href="#"><i class="bi bi-hdd-network-fill"></i> eSpace</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -13,6 +12,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#contact"><i class="bi bi-telephone-fill"></i> Contact</a>
+        </li>
+        <li class="nav-item">
+          <div class="nav-link py-1"><i class="btn btn-dark py-1 bi bi-lightbulb-off" id="darkMode"></i></div>
         </li>
         </ul>
         <ul class="navbar-nav">
@@ -38,9 +40,6 @@
           <a class="nav-link" href="{% url 'registration_register' %}"><i class="bi bi-person-plus-fill"></i> Register</a>
         </li>
         {% endif %}
-        <li class="nav-item">
-          <i class="bi bi-moon-stars"></i>
-        </li>
       </ul>
     </div>
 </nav>
