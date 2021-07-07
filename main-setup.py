@@ -150,6 +150,8 @@ if __name__ == "__main__":
         if file.find(',') >= 0:
             content = file[file.find(',')+1:]
             file = file[:file.find(',')]
+            file = file.split('/')
+            file = os.path.join(*file)
         touch(file, content)
 
     for package in packageVar:
