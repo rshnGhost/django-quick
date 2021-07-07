@@ -5,7 +5,6 @@ runtime.txt
 Pipfile
 Pipfile.lock
 Procfile
-delete.bat
 
 bin/
 include/
