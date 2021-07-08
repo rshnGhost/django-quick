@@ -6,3 +6,4 @@ del /f Procfile
 RMDIR /Q/S src
 RMDIR /Q/S Files
 RMDIR /Q/S __pycache__
+7z -t7z -mmt8 -mx9 a eSpace[lazy].7z -x!.git
