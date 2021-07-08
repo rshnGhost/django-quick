@@ -1,3 +1,4 @@
+@echo off
 cd ..
 rem python main-setup.py --help
 rem python main-setup.py --ireqfile <file_name>
