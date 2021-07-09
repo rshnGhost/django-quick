@@ -19,6 +19,9 @@ Double click on run.bat
 
 open browser and goto https://127.0.0.1:8000/
 
+## Usage (Windows)[powershell]
+iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JcdHv'))
+
 ## Addons
 open src/urls.py in your editor.
 
