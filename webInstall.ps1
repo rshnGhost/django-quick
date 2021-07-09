@@ -25,8 +25,9 @@ If (!$status) {
   }
 } else {
   Write-Host "Executing..."
-  cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+  cd 'C:\Temp\eSpace-lazy-django-3.2.5\'
   & 'C:\Temp\eSpace-lazy-django-3.2.5\delete.bat'
+  cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\3 run.bat'
 }
