@@ -6,16 +6,19 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 # GUI Specs
 Write-Host "Checking for file..."
 cd 'C:\Temp\'
-$status = Test-Path C:\Temp\eSpace-lazy-django-3.2.5.zip -PathType Leaf
-If (!$status) {
+$statusFile = Test-Path C:\Temp\eSpace-lazy-django-3.2.5.zip -PathType Leaf
+If (!$statusFile) {
   Try{
     $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
     $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
     Write-Host "Dowloading latest release"
     Invoke-WebRequest -Uri $download -OutFile $output
     Write-Output "Path of the file : $output"
-    Write-Host "Deleting..."
-    Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+		$statusFolder = Test-Path C:\Temp\eSpace-lazy-django-3.2.5
+		If ($statusFolder) {
+    	Write-Host "Deleting..."
+    	Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+		}
     Write-Host "Expand Archive..."
     Expand-Archive $output 'C:\Temp\'
     Write-Host "Executing..."
@@ -29,8 +32,11 @@ If (!$status) {
     Write-Host "Someting is not working"
   }
 } else {
-  Write-Host "Deleting..."
-  Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+	$statusFolder = Test-Path C:\Temp\eSpace-lazy-django-3.2.5
+	If ($statusFolder) {
+		Write-Host "Deleting..."
+		Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+	}
   Write-Host "Expand Archive..."
   Expand-Archive $output 'C:\Temp\'
   Write-Host "Executing..."
