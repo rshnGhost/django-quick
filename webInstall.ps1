@@ -15,7 +15,7 @@ Write-Host "Checking winget..."
 
 Try{
   $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
-  $output = $PSScriptRoot + "\django-3.2.5.zip"
+  $output = "C:\Temp\django-3.2.5.zip"
   Write-Host "Dowloading latest release"
   Invoke-WebRequest -Uri $download -OutFile $output
   Write-Output "Path of the file : $output"
