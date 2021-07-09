@@ -18,7 +18,7 @@ Try{
   $output = $PSScriptRoot + "\django-3.2.5.zip"
   Write-Host "Dowloading latest release"
   Invoke-WebRequest -Uri $download -OutFile $output
-  Write-Host "Dowloaded to" + $output
+  Write-Host $output
 }
 Catch{
 	Write-Host "Someting is not working"
