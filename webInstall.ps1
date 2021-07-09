@@ -5,6 +5,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 # GUI Specs
 Write-Host "Checking for file..."
+cd 'C:\Temp\'
 $status = Test-Path C:\Temp\eSpace-lazy-django-3.2.5.zip -PathType Leaf
 If (!$status) {
   Try{
