@@ -11,22 +11,24 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 }
 
 # GUI Specs
-Write-Host "Checking winget..."
-
-Try{
-  $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
-  $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
-  Write-Host "Dowloading latest release"
-  Invoke-WebRequest -Uri $download -OutFile $output
-  Write-Output "Path of the file : $output"
-  Expand-Archive $output 'C:\Temp\'
-}
-Catch{
-	Write-Host "Someting is not working"
-}
-Finally {
-	# Start installing the packages with winget
-	#Get-Content .\winget.txt | ForEach-Object {
-	#	iex ("winget install -e " + $_)
-	#}
+Write-Host "Checking for file..."
+if(Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf == False) {
+  Try{
+    $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
+    $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
+    Write-Host "Dowloading latest release"
+    Invoke-WebRequest -Uri $download -OutFile $output
+    Write-Output "Path of the file : $output"
+    Expand-Archive $output 'C:\Temp\'
+    # Executing
+    cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+    & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
+  }
+  Catch{
+    Write-Host "Someting is not working"
+  }
+}else {
+  # Executing
+  cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+  & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
 }
