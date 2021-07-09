@@ -12,8 +12,8 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 # GUI Specs
 Write-Host "Checking for file..."
-Write-Host Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf
-if(Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf == False) {
+$status = Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf
+if($status == False) {
   Try{
     $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
     $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
@@ -29,7 +29,9 @@ if(Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf == False) {
   Catch{
     Write-Host "Someting is not working"
   }
-}else {
+}
+
+if($status == True) {{
   # Executing
   cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
