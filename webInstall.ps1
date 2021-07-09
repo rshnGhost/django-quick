@@ -6,7 +6,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 # GUI Specs
 Write-Host "Checking for file..."
 $status = Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf
-If ($status -eq "False") {
+If (!$status) {
   Try{
     $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
     $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
@@ -24,7 +24,7 @@ If ($status -eq "False") {
   }
 }
 
-If ($status -eq "True") {
+If ($status) {
   Write-Host "Executing..."
   cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
