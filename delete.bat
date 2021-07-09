@@ -1,3 +1,4 @@
+@echo off
 del /f env.txt
 del /f runtime.txt
 del /f Pipfile
