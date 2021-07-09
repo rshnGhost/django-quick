@@ -1,10 +1,3 @@
-Add-Type -AssemblyName System.Windows.Forms
-[System.Windows.Forms.Application]::EnableVisualStyles()
-
-$ErrorActionPreference = 'SilentlyContinue'
-$wshell = New-Object -ComObject Wscript.Shell
-$Button = [System.Windows.MessageBoxButton]::YesNoCancel
-$ErrorIco = [System.Windows.MessageBoxImage]::Error
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator')) {
 	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
 	Exit
@@ -13,7 +6,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 # GUI Specs
 Write-Host "Checking for file..."
 $status = Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf
-if($status -eq "False") {
+If ($status -eq "False") {
   Try{
     $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
     $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
@@ -22,7 +15,7 @@ if($status -eq "False") {
     Write-Output "Path of the file : $output"
     Write-Host "Expand Archive..."
     Expand-Archive $output 'C:\Temp\'
-    # Executing
+    Write-Host "Executing..."
     cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
     & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
   }
@@ -31,8 +24,8 @@ if($status -eq "False") {
   }
 }
 
-if($status -eq "True") {
-  # Executing
+If ($status -eq "True") {
+  Write-Host "Executing..."
   cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
 }
