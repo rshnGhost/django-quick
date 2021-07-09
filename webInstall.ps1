@@ -5,7 +5,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 # GUI Specs
 Write-Host "Checking for file..."
-$status = Test-Path C:\Temp\django-3.2.5.zip -PathType Leaf
+$status = Test-Path C:\Temp\eSpace-lazy-django-3.2.5.zip -PathType Leaf
 If (!$status) {
   Try{
     $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
