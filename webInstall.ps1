@@ -13,21 +13,29 @@ If (!$status) {
     Write-Host "Dowloading latest release"
     Invoke-WebRequest -Uri $download -OutFile $output
     Write-Output "Path of the file : $output"
+    Write-Host "Deleting..."
+    Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
     Write-Host "Expand Archive..."
     Expand-Archive $output 'C:\Temp\'
     Write-Host "Executing..."
     cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+    Write-Host "Setting up..."
     & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
+    Write-Host "Running..."
     & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\3 run.bat'
   }
   Catch{
     Write-Host "Someting is not working"
   }
 } else {
+  Write-Host "Deleting..."
+  Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+  Write-Host "Expand Archive..."
+  Expand-Archive $output 'C:\Temp\'
   Write-Host "Executing..."
-  cd 'C:\Temp\eSpace-lazy-django-3.2.5\'
-  & 'C:\Temp\eSpace-lazy-django-3.2.5\delete.bat'
   cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+  Write-Host "Setting up..."
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
+  Write-Host "Running..."
   & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\3 run.bat'
 }
