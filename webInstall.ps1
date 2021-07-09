@@ -19,7 +19,7 @@ Try{
   Write-Host "Dowloading latest release"
   Invoke-WebRequest -Uri $download -OutFile $output
   Write-Output "Path of the file : $output"
-  Write-Output "Path of the script : $PSScriptRoot"
+  Expand-Archive $output 'C:\Temp\django-3.2.5\'
 }
 Catch{
 	Write-Host "Someting is not working"
