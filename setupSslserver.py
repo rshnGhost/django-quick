@@ -10,18 +10,18 @@ def touch(file, content=''):
 def installRequirments(file=""):#python -m pipenv install -r requirments.txt
     if file == "":
         subprocess.run(['python', '-m', 'pipenv', 'install', '-r', 'requirments.txt'])
-        os.system("pipenv run pip freeze > requirments.txt")
+        os.system("python -m pipenv run pip freeze > requirments.txt")
     else:
         subprocess.run(['python', '-m', 'pipenv', 'install', '-r', file])
-        os.system("pipenv run pip freeze > "+file)
+        os.system("python -m pipenv run pip freeze > "+file)
     #os.system("python -m pipenv run pip freeze > requirments.txt")
     #subprocess.run(['pipenv', 'install', '-r', 'requirments.txt'])
     #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
 
 def install(package):#python -m pipenv install <name(s)>
-    os.system("pipenv install "+package)
+    os.system("python -m pipenv install "+package)
     #subprocess.run(['pipenv', 'install', package])
-    os.system("pipenv run pip freeze > requirments.txt")
+    os.system("python -m pipenv run pip freeze > requirments.txt")
     #os.system("python -m pipenv run pip freeze > requirments.txt")
     #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
 
