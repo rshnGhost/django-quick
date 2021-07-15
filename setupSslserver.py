@@ -45,7 +45,7 @@ def createProject(name):#python -m pipenv run django-admin startproject <name>
     lines[index+1] = "SECRET_KEY = fetch('secret_key')\n"
 
     index = lines.index("STATIC_URL = '/static/'\n")
-    lines[index] = "STATIC_URL = '/static/'\nMEDIA_URL = '/media/'\nSTATICFILES_DIRS = [\n	BASE_DIR / 'static',\n	BASE_DIR / 'media',\n]\nSTATIC_ROOT = ROOT_DIR / 'Files/staticFile'\nMEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n"
+    lines[index] = "STATIC_URL = '/static/'\nMEDIA_URL = '/media/'\nSTATICFILES_DIRS = [\n	BASE_DIR / 'static',\n	BASE_DIR / 'media',\n]\nSTATIC_ROOT = ROOT_DIR / 'Files/staticFile'\nMEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n\nLOGIN_REDIRECT_URL = '/'\n"
 
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
