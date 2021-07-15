@@ -39,13 +39,21 @@ def createProject(name):#python -m pipenv run django-admin startproject <name>
     lines[index] = "\t\t'DIRS': [BASE_DIR / 'templates'],\n"
 
     index = lines.index('BASE_DIR = Path(__file__).resolve().parent.parent\n')
-    lines[index] = "BASE_DIR = Path(__file__).resolve().parent.parent\nROOT_DIR = Path(__file__).resolve().parent.parent.parent\n"
+    lines[index] = lines[index]+"ROOT_DIR = Path(__file__).resolve().parent.parent.parent\n"
 
     index = lines.index('# SECURITY WARNING: keep the secret key used in production secret!\n')
     lines[index+1] = "SECRET_KEY = fetch('secret_key')\n"
 
     index = lines.index("STATIC_URL = '/static/'\n")
-    lines[index] = "STATIC_URL = '/static/'\nMEDIA_URL = '/media/'\nSTATICFILES_DIRS = [\n	BASE_DIR / 'static',\n	BASE_DIR / 'media',\n]\nSTATIC_ROOT = ROOT_DIR / 'Files/staticFile'\nMEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n\nLOGIN_REDIRECT_URL = '/'\n"
+    #lines[index] = "STATIC_URL = '/static/'\nMEDIA_URL = '/media/'\nSTATICFILES_DIRS = [\n	BASE_DIR / 'static',\n	BASE_DIR / 'media',\n]\nSTATIC_ROOT = ROOT_DIR / 'Files/staticFile'\nMEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n\nLOGIN_REDIRECT_URL = '/'\n"
+    lines[index] = lines[index]+"MEDIA_URL = '/media/'\n"
+    lines[index] = lines[index]+"STATICFILES_DIRS = [\n\tBASE_DIR / 'static',\n"
+    lines[index] = lines[index]+"\tBASE_DIR / 'media',\n]\n"
+    lines[index] = lines[index]+"STATIC_ROOT = ROOT_DIR / 'Files/staticFile'\n"
+    lines[index] = lines[index]+"MEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n"
+    lines[index] = lines[index]+"\nLOGIN_REDIRECT_URL = '/'\n"
+    lines[index] = lines[index]+"SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'\n"
+    lines[index] = lines[index]+"SESSION_EXPIRE_AT_BROWSER_CLOSE = True\n"
 
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
@@ -117,12 +125,27 @@ def setupUrl(name, appName):
     "\nfrom django.urls import reverse, get_resolver",
     "\nfrom django.views.decorators.csrf import csrf_exempt",
     "\nfrom django.contrib.auth.decorators import login_required",
+    "\nfrom django.contrib.auth.signals import user_logged_out, user_logged_in, user_login_failed"
+    "\nfrom django.dispatch import receiver"
+    "\n",
+    "\n@receiver(user_logged_out)",
+    "\ndef on_user_logged_out(sender, request, **kwargs):",
+    "\n\tmessages.info(request, '['+request.user.username+'] Logged out.')",
+    "\n",
+    "\n@receiver(user_logged_in)",
+    "\ndef on_user_logged_in(sender, request, **kwargs):",
+    "\n\tmessages.success(request, '['+request.user.username+'] Logged in.')",
+    "\n",
+    "\n@receiver(user_login_failed)",
+    "\ndef on_user_login_failed(sender, request, **kwargs):",
+    "\n\tmessages.warning(request, 'Logged in failed.')",
+    "\n",
     "\n@login_required",
     "\ndef home(request):",
     "\n\tcontext = {}",
-    "\n\tmessages.info(request, 'Information')",
-    "\n\tmessages.success(request, 'Successful')",
-    "\n\tmessages.warning(request, 'Warning')",
+    "\n\t#messages.info(request, 'Information')",
+    "\n\t#messages.success(request, 'Successful')",
+    "\n\t#messages.warning(request, 'Warning')",
     "\n\treturn render(request, 'home.html', context)"]
 
     with open(os.path.join("src", appName, "views.py"), 'w') as fp:

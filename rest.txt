@@ -1,0 +1,25 @@
+python main-setup.py --package djangorestframework
+python main-setup.py --reg main,rest_framework
+python main-setup.py --replace src/main/urls.py,]\n,\tpath\('api-auth/',include\('rest_framework.urls'\)\),\n
+
+python main-setup.py --app main,passwordManager --reg main,passwordManager --url main,passwordManager
+
+#add to settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+#add to views
+from django.contrib.auth.signals import user_logged_out, user_logged_in, user_login_failed
+from django.dispatch import receiver
+
+@receiver(user_logged_out)
+def on_user_logged_out(sender, request, **kwargs):
+	messages.info(request, 'Logged out.')
+
+@receiver(user_logged_in)
+def on_user_logged_in(sender, request, **kwargs):
+	messages.success(request, 'Logged in.')
+
+@receiver(user_login_failed)
+def on_user_logged_in(sender, request, **kwargs):
+	messages.warning(request, 'Logged in failed.')
