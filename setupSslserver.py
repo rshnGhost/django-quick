@@ -54,6 +54,7 @@ def createProject(name):#python -m pipenv run django-admin startproject <name>
     lines[index] = lines[index]+"\nLOGIN_REDIRECT_URL = '/'\n"
     lines[index] = lines[index]+"SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'\n"
     lines[index] = lines[index]+"SESSION_EXPIRE_AT_BROWSER_CLOSE = True\n"
+    lines[index] = lines[index]+"CRISPY_TEMPLATE_PACK = 'bootstrap4'"
 
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)

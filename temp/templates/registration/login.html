@@ -5,7 +5,7 @@
 {% block title %}{% trans "Log in" %}{% endblock %}
 
 {% block content %}
-<form method="post" action="">
+<form method="post" action="" class="row g-3 needs-validation">
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" class="btn btn-sm btn-outline-primary" value="{% trans 'Log in' %}" />
