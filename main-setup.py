@@ -132,7 +132,7 @@ def main(argv):
             except:
                 pass
         elif opt == "--run":
-            if(arg =="0" or arg == '1'):
+            if(arg =="0" or arg == '1' or arg == '2'):
                 run(arg)
         elif opt == "--heroku":
             ver = ""

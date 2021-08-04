@@ -93,6 +93,8 @@ def run(option):
         subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runserver'])
     elif option == "1":
         subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runsslserver'])
+    elif option == "2":
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runsslserver', '0.0.0.0:8000'])
 
 def setupUrl(name, appName):
     lines = []
