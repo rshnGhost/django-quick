@@ -1,6 +1,6 @@
 $fName = 'django-3.2.5'
 $pName = 'django-quick'
-
+$output = "C:\Temp\$pName-$fName.zip"
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
@@ -20,7 +20,6 @@ $statusFile = Test-Path C:\Temp\$pName-$fName.zip -PathType Leaf
 If (!$statusFile) {
   Try{
     $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
-    $output = "C:\Temp\$pName-$fName.zip"
     Write-Host "Dowloading latest release"
     Invoke-WebRequest -Uri $download -OutFile $output
     Write-Output "Path of the file : $output"
