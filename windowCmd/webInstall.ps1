@@ -1,5 +1,5 @@
-$fName = "django-3.2.5"
-$pName = "django-quick"
+$fName = 'django-3.2.5'
+$pName = 'django-quick'
 
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
