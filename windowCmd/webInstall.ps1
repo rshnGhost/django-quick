@@ -13,8 +13,46 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 
-# Install choco
-Set-ExecutionPolicy Bypass -Scope Process
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-
-# Download then Install and Setup
+# GUI Specs
+Write-Host "Checking for file..."
+cd 'C:\Temp\'
+$statusFile = Test-Path C:\Temp\$pName-$fName.zip -PathType Leaf
+If (!$statusFile) {
+  Try{
+    $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
+    $output = "C:\Temp\$pName-$fName.zip"
+    Write-Host "Dowloading latest release"
+    Invoke-WebRequest -Uri $download -OutFile $output
+    Write-Output "Path of the file : $output"
+		$statusFolder = Test-Path C:\Temp\$pName-$fName
+		If ($statusFolder) {
+    	Write-Host "Deleting..."
+    	Remove-Item C:\Temp\$pName-$fName -Recurse
+		}
+    Write-Host "Expand Archive..."
+    Expand-Archive $output 'C:\Temp\'
+    Write-Host "Executing..."
+    cd 'C:\Temp\$pName-$fName\windowCmd\'
+    Write-Host "Setting up..."
+    & 'C:\Temp\$pName-$fName\windowCmd\2 setup.bat'
+    Write-Host "Running..."
+    & 'C:\Temp\$pName-$fName\windowCmd\3 run.bat'
+  }
+  Catch{
+    Write-Host "Someting is not working"
+  }
+} else {
+	$statusFolder = Test-Path C:\Temp\$pName-$fName
+	If ($statusFolder) {
+		Write-Host "Deleting..."
+		Remove-Item 'C:\Temp\$pName-$fName' -Recurse
+	}
+  Write-Host "Expand Archive..."
+  Expand-Archive $output 'C:\Temp\'
+  Write-Host "Executing..."
+  cd 'C:\Temp\$pName-$fName\windowCmd\'
+  Write-Host "Setting up..."
+  & "C:\Temp\$pName-$fName\windowCmd\2 setup.bat"
+  Write-Host "Running..."
+  & "C:\Temp\$pName-$fName\windowCmd\3 run.bat"
+}
