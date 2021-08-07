@@ -45,7 +45,7 @@ If (!$statusFile) {
 	$statusFolder = Test-Path C:\Temp\$pName-$fName
 	If ($statusFolder) {
 		Write-Host "Deleting..."
-		Remove-Item 'C:\Temp\$pName-$fName' -Recurse
+		Remove-Item C:\Temp\$pName-$fName -Recurse
 	}
   Write-Host "Expand Archive..."
   Expand-Archive $output 'C:\Temp\'
