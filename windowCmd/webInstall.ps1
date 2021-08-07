@@ -1,3 +1,6 @@
+$fName = "django-3.2.5"
+$pName = "django-quick"
+
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
@@ -13,43 +16,43 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 # GUI Specs
 Write-Host "Checking for file..."
 cd 'C:\Temp\'
-$statusFile = Test-Path C:\Temp\eSpace-lazy-django-3.2.5.zip -PathType Leaf
+$statusFile = Test-Path 'C:\Temp\'+$pName+'-'+$fName+'.zip' -PathType Leaf
 If (!$statusFile) {
   Try{
-    $download = "https://github.com/rshnGhost/eSpace-lazy/archive/refs/heads/django-3.2.5.zip"
-    $output = "C:\Temp\eSpace-lazy-django-3.2.5.zip"
+    $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
+    $output = 'C:\Temp\'+$pName+'-'+$fName+'.zip'
     Write-Host "Dowloading latest release"
     Invoke-WebRequest -Uri $download -OutFile $output
     Write-Output "Path of the file : $output"
-		$statusFolder = Test-Path C:\Temp\eSpace-lazy-django-3.2.5
+		$statusFolder = Test-Path "C:\Temp\"+$pName
 		If ($statusFolder) {
     	Write-Host "Deleting..."
-    	Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+    	Remove-Item 'C:\Temp\'+$pName -Recurse
 		}
     Write-Host "Expand Archive..."
     Expand-Archive $output 'C:\Temp\'
     Write-Host "Executing..."
-    cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+    cd 'C:\Temp\'+$pName+'-'+$fName+'\windowCmd\'
     Write-Host "Setting up..."
-    & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
+    & 'C:\Temp\'+$pName+'-'+$fName+'\windowCmd\2 setup.bat'
     Write-Host "Running..."
-    & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\3 run.bat'
+    & 'C:\Temp\'+$pName+'-'+$fName+'\windowCmd\3 run.bat'
   }
   Catch{
     Write-Host "Someting is not working"
   }
 } else {
-	$statusFolder = Test-Path C:\Temp\eSpace-lazy-django-3.2.5
+	$statusFolder = Test-Path 'C:\Temp\'+$pName+'-'+$fName+'
 	If ($statusFolder) {
 		Write-Host "Deleting..."
-		Remove-Item 'C:\Temp\eSpace-lazy-django-3.2.5' -Recurse
+		Remove-Item 'C:\Temp\'+$pName+'-'+$fName+' -Recurse
 	}
   Write-Host "Expand Archive..."
   Expand-Archive $output 'C:\Temp\'
   Write-Host "Executing..."
-  cd 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\'
+  cd 'C:\Temp\'+$pName+'-'+$fName+'\windowCmd\'
   Write-Host "Setting up..."
-  & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\2 setup.bat'
+  & 'C:\Temp\'+$pName+'-'+$fName+'\windowCmd\2 setup.bat'
   Write-Host "Running..."
-  & 'C:\Temp\eSpace-lazy-django-3.2.5\windowCmd\3 run.bat'
+  & 'C:\Temp\'+$pName+'-'+$fName+'\windowCmd\3 run.bat'
 }
