@@ -52,7 +52,7 @@ If (!$statusFile) {
   Write-Host "Executing..."
   cd 'C:\Temp\$pName-$fName\windowCmd\'
   Write-Host "Setting up..."
-  & 'C:\Temp\$pName-$fName\windowCmd\2 setup.bat'
+  & "C:\Temp\$pName-$fName\windowCmd\2 setup.bat"
   Write-Host "Running..."
-  & 'C:\Temp\$pName-$fName\windowCmd\3 run.bat'
+  & "C:\Temp\$pName-$fName\windowCmd\3 run.bat"
 }
