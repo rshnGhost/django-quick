@@ -1,4 +1,4 @@
-## eSpace[lazy]
+## Django Quick
 A simple django with ssl, project which should be exended to future website as needed.
 
 ## Requirements
