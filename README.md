@@ -1,6 +1,7 @@
 ## Django Quick
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rshnGhost/django-quick)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/rshnGhost/django-quick/django-3.2.5)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rshnGhost/django-quick?style=plastic)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/rshnGhost/django-quick/django-3.2.5?style=plastic)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/rshnGhost/django-quick/powerShell/django-3.2.5?style=plastic)
 
 A simple django with ssl, project which should be exended to future website as needed.
 
