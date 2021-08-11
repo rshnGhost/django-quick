@@ -17,7 +17,7 @@ Give the details for superuser to be created.
 ## Usage (Windows)
 Double click on run.bat
 
-open browser and goto https://127.0.0.1:8000/
+open browser and goto ```markdown https://127.0.0.1:8000/ ```
 
 ## Usage (Windows)[powershell]
 ```markdown
