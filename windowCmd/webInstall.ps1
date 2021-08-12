@@ -79,6 +79,8 @@ $dName = $pName+'-'+$sha
 $output = "C:\Temp\$dName.zip"
 $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
 $pythonVersion = '3.9.6'
+$path = "C:\Program Files\Python39\python.exe"
+
 # Check if operating system architecture
 Write-Host -NoNewline "Checking architecture`t`t`t"
 if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
@@ -125,8 +127,9 @@ Catch{
 		Write-Host "[Not Found]"
 		$python = 0
 		$statusFile = Test-Path $outputExe -PathType Leaf
+		$status = Test-Path $path -PathType Leaf
 		Write-Host -NoNewline "Checking latest release[python]`t`t"
-		If (!$statusFile){
+		If (!$statusFile -and !$status){
 			Write-Host "[File not Found]"
 			Write-Host -NoNewline "Dowloading latest release[python]`t"
 			Invoke-WebRequest -Uri $url -OutFile $outputExe
@@ -135,16 +138,18 @@ Catch{
 		}
 		else{
 			Write-Host "[File Found]"
-			installPython
+			if(!$status) {
+				installPython
+			}
 		}
 		Try{
 			Write-Host -NoNewline "Checking python`t`t`t`t"
-			$er = (invoke-expression ".\python -V") 2>&1
+			$er = (invoke-expression "$path -V") 2>&1
 			if ($lastexitcode) {throw $er}
 			if (!$lastexitcode) {
 				Write-Host "[Done]"
 				Write-Host -NoNewline "Installing pipenv`t`t`t"
-				$er = (invoke-expression ".\python -m pip install pipenv") 2>&1
+				$er = (invoke-expression "$path -m pip install pipenv") 2>&1
 				if ($lastexitcode) {throw $er}
 				Write-Host "[Done]"
 			}
