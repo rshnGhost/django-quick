@@ -35,7 +35,7 @@ function getSha {
 function deleteOldFolder {
 	$statusFolder = Test-Path C:\Temp\$dName
 	if ($statusFolder) {
-		Write-Host -NoNewline "Deleting old Folder`t`t"
+		Write-Host -NoNewline "Deleting old Folder`t`t`t"
 		Remove-Item C:\Temp\$dName -Recurse
 		Write-Host "[Deleted old Files]"
 	}
@@ -51,7 +51,7 @@ function setupProject {
 }
 
 function expandZip {
-	Write-Host -NoNewline "Expand Archive`t`t`t"
+	Write-Host -NoNewline "Expand Archive`t`t`t`t"
 	Expand-Archive $output C:\Temp\$dName
 	Write-Host "[Done]"
 }
@@ -80,7 +80,7 @@ $output = "C:\Temp\$dName.zip"
 $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
 $pythonVersion = '3.9.6'
 # Check if operating system architecture
-Write-Host -NoNewline "Checking architecture`t`t"
+Write-Host -NoNewline "Checking architecture`t`t`t"
 if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
 	Write-Host "[64bit Found]"
 	$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+"-amd64.exe"
@@ -94,7 +94,7 @@ else{
 
 Try{
 	# Check if pipenv is already installed
-	Write-Host -NoNewline "Checking pipenv`t`t`t"
+	Write-Host -NoNewline "Checking pipenv`t`t`t`t"
 	$er = (invoke-expression "python -m pipenv --version") 2>&1
 	if ($lastexitcode) {throw $er}
 	Write-Host "[Found]"
@@ -104,14 +104,14 @@ Catch{
 	Write-Host "[Not Found]"
 	$pip = 0
 	## checking python
-	Write-Host -NoNewline "Checking python`t`t`t"
+	Write-Host -NoNewline "Checking python`t`t`t`t"
 	Try{
 		# Check if python is already installed
 		$er = (invoke-expression "python -V") 2>&1
 		if ($lastexitcode) {throw $er}
 		Write-Host "[Found]"
 		$python = 1
-		Write-Host -NoNewline "Installing pipenv`t`t"
+		Write-Host -NoNewline "Installing pipenv`t`t`t"
 		Try{
 			$er = (invoke-expression "python -m pip install pipenv") 2>&1
 			if ($lastexitcode) {throw $er}
@@ -138,12 +138,12 @@ Catch{
 			installPython
 		}
 		Try{
-			Write-Host -NoNewline "Checking python`t`t`t"
+			Write-Host -NoNewline "Checking python`t`t`t`t"
 			$er = (invoke-expression "python -V") 2>&1
 			if ($lastexitcode) {throw $er}
 			if (!$lastexitcode) {
 				Write-Host "[Done]"
-				Write-Host -NoNewline "Installing pipenv`t`t"
+				Write-Host -NoNewline "Installing pipenv`t`t`t"
 				$er = (invoke-expression "python -m pip install pipenv") 2>&1
 				if ($lastexitcode) {throw $er}
 				Write-Host "[Done]"
