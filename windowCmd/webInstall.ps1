@@ -1,4 +1,4 @@
-## iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRia7'))
+## iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
 
 function getAdmin {
 	Add-Type -AssemblyName System.Windows.Forms
