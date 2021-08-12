@@ -139,12 +139,12 @@ Catch{
 		}
 		Try{
 			Write-Host -NoNewline "Checking python`t`t`t`t"
-			$er = (invoke-expression "python -V") 2>&1
+			$er = (invoke-expression ".\python -V") 2>&1
 			if ($lastexitcode) {throw $er}
 			if (!$lastexitcode) {
 				Write-Host "[Done]"
 				Write-Host -NoNewline "Installing pipenv`t`t`t"
-				$er = (invoke-expression "python -m pip install pipenv") 2>&1
+				$er = (invoke-expression ".\python -m pip install pipenv") 2>&1
 				if ($lastexitcode) {throw $er}
 				Write-Host "[Done]"
 			}
