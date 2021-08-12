@@ -11,7 +11,7 @@ function getAdmin {
         Select "No" to not run this as an Administrator
         Select "Cancel" to stop the script.'
 	If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator')) {
-		$Prompt = [System.Windows.MessageBox]::Show($Ask, "Run as an Administrator or not?", $Button, $ErrorIco) 
+		$Prompt = [System.Windows.MessageBox]::Show($Ask, "Run as an Administrator or not?", $Button, $ErrorIco)
 		Switch ($Prompt) {
 			Yes {
 				Write-Host "You didn't run this script as an Administrator. This script will self elevate to run as an Administrator and continue."
@@ -124,7 +124,7 @@ Catch{
 	Catch{
 		Write-Host "[Not Found]"
 		$python = 0
-		$statusFile = Test-Path $output -PathType Leaf
+		$statusFile = Test-Path $outputExe -PathType Leaf
 		Write-Host -NoNewline "Checking latest release`t`t"
 		If (!$statusFile){
 			Write-Host "[File not Found]"
