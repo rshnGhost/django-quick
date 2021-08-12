@@ -61,12 +61,12 @@ function installPython{
 	$args = '/passive', 'install', 'InstallAllUsers=1', 'PrependPath=1', 'Include_test=0'
 	Start-Process -Wait $outputExe -ArgumentList $args
 	Start-Process -Wait refreshenv
-	Try{
-		$er = (invoke-expression "python -V") 2>&1
-		if ($lastexitcode) {throw $er}
+	cd "C:\Program Files\Python39"
+	$ver = .\python -V
+	if("Python $pythonVersion" -eq $ver) {
 		Write-Host "[Installed]"
 	}
-	Catch{
+	else {
 		Write-Host "[Not Installed]"
 	}
 }
