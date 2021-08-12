@@ -45,9 +45,9 @@ function setupProject {
 	Write-Host "Executing..."
 	cd "C:\Temp\$dName\$pName-$fName\windowCmd\"
 	Write-Host "Setting up..."
-    & "C:\Temp\$dName\$pName-$fName\windowCmd\2 setup.bat"
-    Write-Host "Running..."
-    & "C:\Temp\$dName\$pName-$fName\windowCmd\3 run.bat"
+	& "C:\Temp\$dName\$pName-$fName\windowCmd\2 setup.bat"
+	Write-Host "Running..."
+	& "C:\Temp\$dName\$pName-$fName\windowCmd\3 run.bat"
 }
 
 function expandZip {
@@ -57,7 +57,7 @@ function expandZip {
 }
 
 function installPython{
-	Write-Host -NoNewline "Installing latest release`t"
+	Write-Host -NoNewline "Installing latest release[python]`t"
 	$args = '/passive', 'install', 'InstallAllUsers=1', 'PrependPath=1', 'Include_test=0'
 	Start-Process -Wait $outputExe -ArgumentList $args
 	Start-Process -Wait refreshenv
@@ -125,10 +125,10 @@ Catch{
 		Write-Host "[Not Found]"
 		$python = 0
 		$statusFile = Test-Path $outputExe -PathType Leaf
-		Write-Host -NoNewline "Checking latest release`t`t"
+		Write-Host -NoNewline "Checking latest release[python]`t`t"
 		If (!$statusFile){
 			Write-Host "[File not Found]"
-			Write-Host -NoNewline "Dowloading latest release`t"
+			Write-Host -NoNewline "Dowloading latest release[python]`t"
 			Invoke-WebRequest -Uri $url -OutFile $outputExe
 			Write-Host "[Downloaded]"
 			installPython
@@ -155,11 +155,11 @@ Catch{
 	}
 }
 deleteOldFolder
-Write-Host -NoNewline "Checking for file`t`t"
+Write-Host -NoNewline "Checking for file[project]`t`t"
 $statusFile = Test-Path $output -PathType Leaf
 if (!$statusFile) {
 	Write-Host "[File not Found]"
-	Write-Host -NoNewline "Dowloading latest release`t"
+	Write-Host -NoNewline "Dowloading latest release[project]`t"
 	Invoke-WebRequest -Uri $download -OutFile $output
 	$statusFile = Test-Path $output -PathType Leaf
 	if (!$statusFile) {
