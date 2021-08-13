@@ -71,23 +71,20 @@ function installPython{
 	}
 }
 
-function checkArch {
-	# Check if operating system architecture
-	Write-Host -NoNewline "Checking architecture`t`t`t"
-	if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
-		Write-Host "[64bit Found]"
-		$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+"-amd64.exe"
-		$outputExe = "C:\Temp\python-"+$pythonVersion+"-amd64.exe"
-	}
-	else{
-		Write-Host "[32bit Found]"
-		$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+".exe"
-		$outputExe = "C:\Temp\python-"+$pythonVersion+".exe"
-	}
+getAdmin
+# Check if operating system architecture
+Write-Host -NoNewline "Checking architecture`t`t`t"
+if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
+	Write-Host "[64bit Found]"
+	$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+"-amd64.exe"
+	$outputExe = "C:\Temp\python-"+$pythonVersion+"-amd64.exe"
+}
+else{
+	Write-Host "[32bit Found]"
+	$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+".exe"
+	$outputExe = "C:\Temp\python-"+$pythonVersion+".exe"
 }
 
-getAdmin
-checkArch
 $fName = 'django-3.2.5'
 $pName = 'django-quick'
 $sha = getSha
