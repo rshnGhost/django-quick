@@ -71,7 +71,23 @@ function installPython{
 	}
 }
 
+function checkArch {
+	# Check if operating system architecture
+	Write-Host -NoNewline "Checking architecture`t`t`t"
+	if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
+		Write-Host "[64bit Found]"
+		$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+"-amd64.exe"
+		$outputExe = "C:\Temp\python-"+$pythonVersion+"-amd64.exe"
+	}
+	else{
+		Write-Host "[32bit Found]"
+		$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+".exe"
+		$outputExe = "C:\Temp\python-"+$pythonVersion+".exe"
+	}
+}
+
 getAdmin
+checkArch
 $fName = 'django-3.2.5'
 $pName = 'django-quick'
 $sha = getSha
@@ -80,19 +96,6 @@ $output = "C:\Temp\$dName.zip"
 $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
 $pythonVersion = '3.9.6'
 $path = "C:\Program Files\Python39\python.exe"
-
-# Check if operating system architecture
-Write-Host -NoNewline "Checking architecture`t`t`t"
-if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
-	Write-Host "[64bit Found]"
-	$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+"-amd64.exe"
-	$outputExe = "C:\Temp\python-"+$pythonVersion+"-amd64.exe"
-}
-else{
-	Write-Host "[32bit Found]"
-	$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+".exe"
-	$outputExe = "C:\Temp\python-"+$pythonVersion+".exe"
-}
 
 Try{
 	# Check if pipenv is already installed
