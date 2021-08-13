@@ -35,7 +35,7 @@ function getSha {
 function deleteOldFolder {
 	$statusFolder = Test-Path C:\Temp\$dName
 	if ($statusFolder) {
-		Write-Host -NoNewline "Deleting old Folder`t`t`t"
+		Write-Host -NoNewline "Deleting old Folder`t`t"
 		Remove-Item C:\Temp\$dName -Recurse
 		Write-Host "[Deleted old Files]"
 	}
@@ -45,35 +45,42 @@ function setupProject {
 	Write-Host "Executing..."
 	cd "C:\Temp\$dName\$pName-$fName\windowCmd\"
 	Write-Host "Setting up..."
-	& "C:\Temp\$dName\$pName-$fName\windowCmd\2 setup.bat"
-	Write-Host "Running..."
-	& "C:\Temp\$dName\$pName-$fName\windowCmd\3 run.bat"
+    & "C:\Temp\$dName\$pName-$fName\windowCmd\2 setup.bat"
+    Write-Host "Running..."
+    & "C:\Temp\$dName\$pName-$fName\windowCmd\3 run.bat"
 }
 
 function expandZip {
-	Write-Host -NoNewline "Expand Archive`t`t`t`t"
+	Write-Host -NoNewline "Expand Archive`t`t`t"
 	Expand-Archive $output C:\Temp\$dName
 	Write-Host "[Done]"
 }
 
 function installPython{
-	Write-Host -NoNewline "Installing latest release[python]`t"
+	Write-Host -NoNewline "Installing latest release`t"
 	$args = '/passive', 'install', 'InstallAllUsers=1', 'PrependPath=1', 'Include_test=0'
 	Start-Process -Wait $outputExe -ArgumentList $args
 	Start-Process -Wait refreshenv
-	cd "C:\Program Files\Python39"
-	$ver = .\python -V
-	if("Python $pythonVersion" -eq $ver) {
+	Try{
+		$er = (invoke-expression "python -V") 2>&1
+		if ($lastexitcode) {throw $er}
 		Write-Host "[Installed]"
 	}
-	else {
+	Catch{
 		Write-Host "[Not Installed]"
 	}
 }
 
 getAdmin
+$fName = 'django-3.2.5'
+$pName = 'django-quick'
+$sha = getSha
+$dName = $pName+'-'+$sha
+$output = "C:\Temp\$dName.zip"
+$download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
+$pythonVersion = '3.9.6'
 # Check if operating system architecture
-Write-Host -NoNewline "Checking architecture`t`t`t"
+Write-Host -NoNewline "Checking architecture`t`t"
 if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {
 	Write-Host "[64bit Found]"
 	$url = "https://www.python.org/ftp/python/"+$pythonVersion+"/python-"+$pythonVersion+"-amd64.exe"
@@ -85,18 +92,9 @@ else{
 	$outputExe = "C:\Temp\python-"+$pythonVersion+".exe"
 }
 
-$fName = 'django-3.2.5'
-$pName = 'django-quick'
-$sha = getSha
-$dName = $pName+'-'+$sha
-$output = "C:\Temp\$dName.zip"
-$download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
-$pythonVersion = '3.9.6'
-$path = "C:\Program Files\Python39\python.exe"
-
 Try{
 	# Check if pipenv is already installed
-	Write-Host -NoNewline "Checking pipenv`t`t`t`t"
+	Write-Host -NoNewline "Checking pipenv`t`t`t"
 	$er = (invoke-expression "python -m pipenv --version") 2>&1
 	if ($lastexitcode) {throw $er}
 	Write-Host "[Found]"
@@ -106,14 +104,14 @@ Catch{
 	Write-Host "[Not Found]"
 	$pip = 0
 	## checking python
-	Write-Host -NoNewline "Checking python`t`t`t`t"
+	Write-Host -NoNewline "Checking python`t`t`t"
 	Try{
 		# Check if python is already installed
 		$er = (invoke-expression "python -V") 2>&1
 		if ($lastexitcode) {throw $er}
 		Write-Host "[Found]"
 		$python = 1
-		Write-Host -NoNewline "Installing pipenv`t`t`t"
+		Write-Host -NoNewline "Installing pipenv`t`t"
 		Try{
 			$er = (invoke-expression "python -m pip install pipenv") 2>&1
 			if ($lastexitcode) {throw $er}
@@ -126,30 +124,27 @@ Catch{
 	Catch{
 		Write-Host "[Not Found]"
 		$python = 0
-		$statusFile = Test-Path $outputExe -PathType Leaf
-		$status = Test-Path $path -PathType Leaf
-		Write-Host -NoNewline "Checking latest release[python]`t`t"
-		If (!$statusFile -and !$status){
+		$statusFile = Test-Path $output -PathType Leaf
+		Write-Host -NoNewline "Checking latest release`t`t"
+		If (!$statusFile){
 			Write-Host "[File not Found]"
-			Write-Host -NoNewline "Dowloading latest release[python]`t"
+			Write-Host -NoNewline "Dowloading latest release`t"
 			Invoke-WebRequest -Uri $url -OutFile $outputExe
 			Write-Host "[Downloaded]"
 			installPython
 		}
 		else{
 			Write-Host "[File Found]"
-			if(!$status) {
-				installPython
-			}
+			installPython
 		}
 		Try{
-			Write-Host -NoNewline "Checking python`t`t`t`t"
-			$er = (invoke-expression "$path -V") 2>&1
+			Write-Host -NoNewline "Checking python`t`t`t"
+			$er = (invoke-expression "python -V") 2>&1
 			if ($lastexitcode) {throw $er}
 			if (!$lastexitcode) {
 				Write-Host "[Done]"
-				Write-Host -NoNewline "Installing pipenv`t`t`t"
-				$er = (invoke-expression "$path -m pip install pipenv") 2>&1
+				Write-Host -NoNewline "Installing pipenv`t`t"
+				$er = (invoke-expression "python -m pip install pipenv") 2>&1
 				if ($lastexitcode) {throw $er}
 				Write-Host "[Done]"
 			}
@@ -160,11 +155,11 @@ Catch{
 	}
 }
 deleteOldFolder
-Write-Host -NoNewline "Checking for file[project]`t`t"
+Write-Host -NoNewline "Checking for file`t`t"
 $statusFile = Test-Path $output -PathType Leaf
 if (!$statusFile) {
 	Write-Host "[File not Found]"
-	Write-Host -NoNewline "Dowloading latest release[project]`t"
+	Write-Host -NoNewline "Dowloading latest release`t"
 	Invoke-WebRequest -Uri $download -OutFile $output
 	$statusFile = Test-Path $output -PathType Leaf
 	if (!$statusFile) {
