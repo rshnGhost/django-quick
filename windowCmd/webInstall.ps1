@@ -32,6 +32,13 @@ function getSha {
 	return $releases.sha[0].substring(0, [System.Math]::Min(7, $releases.Length))
 }
 
+function createTempFolder {
+	$statusFolder = Test-Path C:\Temp
+	if (!$statusFolder) {
+		New-Item -Path 'C:\Temp' -ItemType Directory
+	}
+}
+
 function deleteOldFolder {
 	$statusFolder = Test-Path C:\Temp\$dName
 	if ($statusFolder) {
@@ -72,6 +79,7 @@ function installPython{
 }
 
 getAdmin
+createTempFolder
 $fName = 'django-3.2.5'
 $pName = 'django-quick'
 $sha = getSha
