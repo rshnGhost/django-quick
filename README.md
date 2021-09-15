@@ -25,6 +25,14 @@ open browser and goto https://127.0.0.1:8000/
 
 ## Usage (Windows)[powershell]
 ```markdown
+Get-ExecutionPolicy
+```
+
+```markdown
+Set-ExecutionPolicy Bypass -Scope Process
+```
+
+```markdown
 iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
 ```
 ## Addons
