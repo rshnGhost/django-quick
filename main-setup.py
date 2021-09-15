@@ -86,7 +86,7 @@ def main(argv):
             makeFolder(os.path.join("src", "credentials"))
             import secrets, string
             secret_key = "".join(secrets.choice(string.digits + string.ascii_letters + string.punctuation)for i in range(100))
-            touch(os.path.join("src", "credentials","credentials.py"),'credentials = {\n\t"secret_key" : '+secret_key+',\n}')
+            touch(os.path.join("src", "credentials","credentials.py"),'credentials = {\n\t"secret_key" : "'+secret_key+'",\n}')
         elif opt == "--app":
             if arg.find(',') >= 0:
                 proj = arg[:arg.find(',')]
