@@ -85,7 +85,7 @@ def main(argv):
         elif opt == "--cred":
             makeFolder(os.path.join("src", "credentials"))
             import secrets, string
-            punctuation = "!#$%&()*+,-./:;<=>?@[\]^_{|}~"
+            punctuation = "!#$%&()*+,-.:;<=>?@[]^_{|}~"
             secret_key = "".join(secrets.choice(string.digits + string.ascii_letters + punctuation)for i in range(100))
             touch(os.path.join("src", "credentials","credentials.py"),'credentials = {\n\t"secret_key" : "'+secret_key+'",\n}')
         elif opt == "--app":
