@@ -116,9 +116,15 @@ def setupUrl(name, appName):
             "\nfrom . import views",
             "\nfrom django.contrib.auth.decorators import login_required",
             "\napp_name = 'dataStorage'",
+            "\nfrom knox import views as knox_views",
             "\nurlpatterns = [",
             "\n\t#path('/', login_required(iViews.familyList.as_view()), name='familyList'),",
             "\n\tpath('', views.home, name='home'),",
+            "\n\tpath('api/login/', views.KnoxLoginAPI.as_view(), name='api_login'),",
+            "\n\tpath('api/rflogin/', views.RFLoginAPI.as_view(), name='api_login'),",
+            "\n\tpath('api/home/', views.HomeView.as_view(), name='api_home'),",
+            "\n\tpath('api/logout/', knox_views.LogoutView.as_view(), name='api_logout'),",
+            "\n\tpath('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),",
             "\n]"]
     with open(os.path.join("src", appName, "urls.py"), 'w') as fp:
         fp.writelines(lines)
@@ -149,7 +155,48 @@ def setupUrl(name, appName):
     "\n\t#messages.info(request, 'Information')",
     "\n\t#messages.success(request, 'Successful')",
     "\n\t#messages.warning(request, 'Warning')",
-    "\n\treturn render(request, 'home.html', context)"]
+    "\n\treturn render(request, 'home.html', context)",
+    "\n\nfrom rest_framework.views import APIView",
+    "\nfrom rest_framework.response import Response",
+    "\nfrom rest_framework.permissions import IsAuthenticated, AllowAny",
+    "\nfrom rest_framework.authtoken.serializers import AuthTokenSerializer",
+    "\nfrom knox.views import LoginView as KnoxLoginView",
+    "\nfrom django.contrib.auth import login",
+    "\nfrom knox.auth import TokenAuthentication",
+    "\n",
+    "\nclass KnoxLoginAPI(KnoxLoginView):",
+    "\n\tpermission_classes = (AllowAny,)",
+    "\n",
+    "\n\tdef post(self, request, format=None):",
+    "\n\t\tserializer = AuthTokenSerializer(data=request.data)",
+    "\n\t\tserializer.is_valid(raise_exception=True)",
+    "\n\t\tuser = serializer.validated_data['user']",
+    "\n\t\tlogin(request, user)",
+    "\n\t\treturn super(KnoxLoginAPI, self).post(request, format=None)",
+    "\n",
+    "\nfrom rest_framework.authtoken.views import ObtainAuthToken",
+    "\nfrom rest_framework.authtoken.models import Token",
+    "\nclass RFLoginAPI(ObtainAuthToken):",
+    "\n",
+    "\n	def post(self, request, *args, **kwargs):",
+    "\n\t\tserializer = self.serializer_class(data=request.data, context={'request': request})",
+    "\n\t\tserializer.is_valid(raise_exception=True)",
+    "\n\t\tuser = serializer.validated_data['user']",
+    "\n\t\ttoken, created = Token.objects.get_or_create(user=user)",
+    "\n\t\tfrom knox.models import AuthToken",
+    "\n\t\tknoxToken = AuthToken.objects.create(user)[1]",
+    "\n\t\treturn Response({",
+    "\n\t\t\t'token': token.key,",
+    "\n\t\t\t'created': created,",
+    "\n\t\t\t'knoxToken': knoxToken,",
+    "\n\t\t})",
+    "\n",
+    "\nclass HomeView(APIView):",
+    "\n\tauthentication_classes = [TokenAuthentication]",
+    "\n",
+    "\n\tdef get(self, request):",
+    "\n\t\tcontent = {'message': 'Hello, World!'}",
+    "\n\t\treturn Response(content)"]
 
     with open(os.path.join("src", appName, "views.py"), 'w') as fp:
         fp.writelines(lines)
@@ -160,6 +207,10 @@ def secure(name):
         lines = fp.readlines()
     lines[-1] = lines[-1]+"\nSECURE_HSTS_SECONDS = 10\nSECURE_SSL_REDIRECT = True\nSESSION_COOKIE_SECURE = True\n"
     lines[-1] = lines[-1]+"CSRF_COOKIE_SECURE = True\nSECURE_HSTS_INCLUDE_SUBDOMAINS = True\nSECURE_HSTS_PRELOAD = True"
+    lines[-1] = lines[-1]+"\n# REST_FRAMEWORK = {\n#\t'DEFAULT_AUTHENTICATION_CLASSES':"
+    lines[-1] = lines[-1]+"[\n#\t\t# 'rest_framework.authentication.TokenAuthentication',"
+    lines[-1] = lines[-1]+"\n#\t\t'knox.auth.TokenAuthentication',\n#\t],\n# }"
+
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
 
@@ -220,6 +271,32 @@ def clean():
                         #print(url)
                 except:
                     pass
+
+def make_signal(name):
+    lines = []
+    with open(os.path.join("src", name, "apps.py"), 'r') as fp:
+        lines = fp.readlines()
+
+    lines = f"from django.apps import AppConfig\n\nclass {name.capitalize()}Config(AppConfig):\
+        \n\tdefault_auto_field = 'django.db.models.BigAutoField'\
+        \n\tname = '{name}'\
+        \n\n\tdef ready(self):\
+        \n\t\timport {name}.signals\n"
+
+    with open(os.path.join("src", name, "apps.py"), 'w') as fp:
+        fp.writelines(lines)
+
+    lines = f"from django.db.models.signals import post_save\
+        \nfrom django.dispatch import receiver\
+        \nfrom django.conf import settings\
+        \nfrom rest_framework.authtoken.models import Token\
+        \n\n@receiver(post_save, sender=settings.AUTH_USER_MODEL)\
+        \ndef updateOpenSearch(sender, instance, created, **kwargs):\
+        \n\tif created:\
+        \n\t\tToken.objects.create(user = instance)"
+
+    with open(os.path.join("src", name, "signals.py"), 'w') as fp:
+        fp.writelines(lines)
 
 if __name__ == '__main__':
     touch('Pipfile')

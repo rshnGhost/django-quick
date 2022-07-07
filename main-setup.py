@@ -61,7 +61,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"",
                                     ["help","install","touch=","ireqfile=","package=","project=",
-                                    "cred","app=","reg=","folder=","move=","setup",
+                                    "cred","app=","reg=","folder=","move=","setup","signal=",
                                     "run=","copy=","url=","replace=","secure=","heroku=","clean"]
                                     )
     except getopt.GetoptError:
@@ -145,6 +145,8 @@ def main(argv):
             setupHeroku(arg, ver)
         elif opt == "--clean":
             clean()
+        elif opt == "--signal":
+            make_signal(arg)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
