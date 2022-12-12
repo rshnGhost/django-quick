@@ -80,13 +80,13 @@ function installPython{
 
 getAdmin
 createTempFolder
-$fName = 'django-3.2.5'
+$fName = 'django-4.1.4'
 $pName = 'django-quick'
 $sha = getSha
 $dName = $pName+'-'+$sha
 $output = "C:\Temp\$dName.zip"
 $download = "https://github.com/rshnGhost/"+$pName+"/archive/refs/heads/"+$fName+".zip"
-$pythonVersion = '3.9.6'
+$pythonVersion = '3.11.1'
 # Check if operating system architecture
 Write-Host -NoNewline "Checking architecture`t`t"
 if (($env:PROCESSOR_ARCHITECTURE -eq "AMD64") -and ([Environment]::Is64BitOperatingSystem)) {

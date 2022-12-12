@@ -24,7 +24,7 @@ python main-setup.py --copy temp/static,src/static --copy temp/templates,src/tem
 python main-setup.py --replace src/main/urls.py,]\n,\tpath\('accounts/',include\('registration.backends.simple.urls'\)\),\n
 python main-setup.py --folder src/media
 python main-setup.py --touch src/media/.nomedia
-python main-setup.py --heroku main,python-3.9.5
+python main-setup.py --heroku main,python-3.11.1
 python main-setup.py --clean
 python main-setup.py --setup --secure main
 python main-setup.py --signal dataStorage
