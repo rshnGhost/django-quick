@@ -1,4 +1,9 @@
 import subprocess, os, re
+import configparser
+
+filename = "file.ini"
+config = configparser.ConfigParser()
+config.read(filename)
 
 def touch(file, content=''):
     lines=[]
@@ -44,7 +49,7 @@ def createProject(name):#python -m pipenv run django-admin startproject <name>
     index = lines.index('# SECURITY WARNING: keep the secret key used in production secret!\n')
     lines[index+1] = "SECRET_KEY = fetch('secret_key')\n"
 
-    index = lines.index("STATIC_URL = '/static/'\n")
+    index = lines.index("STATIC_URL = 'static/'\n")
     #lines[index] = "STATIC_URL = '/static/'\nMEDIA_URL = '/media/'\nSTATICFILES_DIRS = [\n	BASE_DIR / 'static',\n	BASE_DIR / 'media',\n]\nSTATIC_ROOT = ROOT_DIR / 'Files/staticFile'\nMEDIA_ROOT = ROOT_DIR / 'Files/mediaFile'\n\nLOGIN_REDIRECT_URL = '/'\n"
     lines[index] = lines[index]+"MEDIA_URL = '/media/'\n"
     lines[index] = lines[index]+"STATICFILES_DIRS = [\n\tBASE_DIR / 'static',\n"
@@ -85,8 +90,24 @@ def setup():#
     subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'makemigrations'])
     subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'migrate'])
     subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'collectstatic'])
-    print('Enter following details for root user')
-    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser'])
+    try:
+        username = config.get("SETTINGS", "username")
+    except Exception as e:
+        username = ""
+    try:
+        password = config.get("SETTINGS", "password")
+    except Exception as e:
+        password = ""
+    try:
+        email = config.get("SETTINGS", "email")
+    except Exception as e:
+        email = ""
+    if username and password and email:
+        # subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--no-input', '--username='+username, '--email='+email])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--username='+username, '--email='+email])
+    else:
+        print('Enter following details for root user')
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser'])
 
 def run(option):
     if option == "0":

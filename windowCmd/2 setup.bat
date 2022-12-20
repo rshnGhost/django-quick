@@ -1,9 +1,10 @@
 @echo off
 cd ..
+python -m pip install --upgrade pip
 rem python main-setup.py --help
 rem python main-setup.py --ireqfile <file_name>
-python main-setup.py --touch Pipfile
-python main-setup.py --install requirments.txt
+rem python main-setup.py --touch Pipfile
+rem python main-setup.py --install requirments.txt
 rem python main-setup.py --package django-sslserver
 rem python main-setup.py --package django-registration-redux
 rem python main-setup.py --package django-crispy-forms
