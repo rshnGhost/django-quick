@@ -35,6 +35,10 @@ Set-ExecutionPolicy Bypass -Scope Process
 ```markdown
 iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
 ```
+
+```markdown
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1'))
+```
 ## Addons
 open src/urls.py in your editor.
 
