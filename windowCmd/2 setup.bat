@@ -12,6 +12,7 @@ rem python main-setup.py --package djangorestframework
 rem python main-setup.py --package django-rest-knox
 rem python main-setup.py --package whitenoise
 rem python main-setup.py --package gunicorn
+python -m pipenv install
 python main-setup.py --project main
 python main-setup.py --cred
 python main-setup.py --app main,dataStorage --reg main,dataStorage.apps.DatastorageConfig --url main,dataStorage
