@@ -1,12 +1,12 @@
 ## Django Quick
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rshnGhost/django-quick?style=plastic)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/rshnGhost/django-quick/django-3.2.5?style=plastic)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/rshnGhost/django-quick/powerShell/django-3.2.5?style=plastic)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/rshnGhost/django-quick/django-4.1.4?style=plastic)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/rshnGhost/django-quick/powerShell/django-4.1.4?style=plastic)
 
 A simple django with ssl, project which should be exended to future website as needed.
 
 ## Requirements
-Python 3.9
+Python 3.11.1
 
 ## Installation (Windows)
 Double click on install.bat (should have internet connection)
@@ -33,12 +33,14 @@ Set-ExecutionPolicy Bypass -Scope Process
 ```
 
 ```markdown
+iex ((New-Object System.Net.WebClient).DownloadString('shorturl.at/yFIU4'))
+```
+
+## obsolete
+```markdown
 iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
 ```
 
-```markdown
-iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1'))
-```
 ## Addons
 open src/urls.py in your editor.
 
