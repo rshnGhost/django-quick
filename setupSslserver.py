@@ -103,8 +103,10 @@ def setup():#
     except Exception as e:
         email = ""
     if username and password and email:
-        # subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--no-input', '--username='+username, '--email='+email])
-        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--username='+username, '--email='+email])
+        findReplaceAt('.env', 'DJANGO_SUPERUSER_PASSWORD=password\n', 'DJANGO_SUPERUSER_PASSWORD='+password+'\n', 1)
+        # subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--username='+username, '--email='+email])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--no-input', '--username='+username, '--email='+email])
+        findReplaceAt('.env', 'DJANGO_SUPERUSER_PASSWORD='+password+'\n', 'DJANGO_SUPERUSER_PASSWORD=password\n', 1)
     else:
         print('Enter following details for root user')
         subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser'])
