@@ -36,6 +36,10 @@ Set-ExecutionPolicy Bypass -Scope Process
 iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1'))
 ```
 
+```markdown
+iwr -useb https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1 | iex
+```
+
 ## obsolete
 ```markdown
 iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
