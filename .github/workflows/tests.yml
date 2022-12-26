@@ -16,4 +16,5 @@ jobs:
       - run: python -m pipenv install
       - run: python -m pipenv shell
       - run: cd windowCmd
-      - run: "2 setup.bat"
+      - run: start "2 setup.bat"
+      - run: cmd /c "2 setup.bat"
