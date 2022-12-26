@@ -23,7 +23,7 @@ Double click on run.bat
 
 open browser and goto https://127.0.0.1:8000/
 
-## Usage (Windows)[powershell]
+## Usage (Windows)[powershell] (obsolete)
 ```markdown
 Get-ExecutionPolicy
 ```
@@ -31,8 +31,6 @@ Get-ExecutionPolicy
 ```markdown
 Set-ExecutionPolicy Bypass -Scope Process
 ```
-
-## obsolete
 
 ```markdown
 iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1'))
@@ -44,6 +42,27 @@ iwr -useb https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/
 
 ```markdown
 iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
+```
+
+## Using PyPI
+[![Tests (windows)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_windows.yml/badge.svg)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_windows.yml) [![Tests (ubuntu)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_ubuntu.yml/badge.svg)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_ubuntu.yml)
+
+```markdown
+pip install django-space
+```
+
+```markdown
+django-space
+```
+
+## Credential
+### Username
+```markdown
+django
+```
+### Password
+```markdown
+space
 ```
 
 ## Addons
