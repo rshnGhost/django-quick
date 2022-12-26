@@ -126,7 +126,7 @@ def main(argv):
         elif opt == "--folder":
             folderVar.append(arg)
         elif opt == "--setup":
-            setup(username="django", password="space", email="django@space.com")
+            setup()
         elif opt == "--secure":
             secure(arg)
             try:

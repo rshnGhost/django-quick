@@ -13,8 +13,4 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - run: python -m pip install pipenv
-      - run: python -m pipenv install
-      - run: python -m pipenv shell
-      - run: cd windowCmd
-      - run: start "2 setup.bat"
-      - run: cmd /c "2 setup.bat"
+      - run: python main.py

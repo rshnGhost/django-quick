@@ -12,27 +12,26 @@ def touch(file, content=''):
     with open(file, 'w') as fp:
         fp.writelines(lines)
 
-def installRequirments(file=""):#python install -r requirments.txt
+def installRequirments(file=""):#python -m pipenv install -r requirments.txt
     if file == "":
-        subprocess.run(['python', 'install', '-r', 'requirments.txt'])
-        os.system("python -m pip freeze > requirments.txt")
+        subprocess.run(['python', '-m', 'pipenv', 'install', '-r', 'requirments.txt'])
+        os.system("python -m pipenv run pip freeze > requirments.txt")
     else:
-        subprocess.run(['python', 'install', '-r', file])
-        os.system("python -m pip freeze > "+file)
-    #os.system("python run pip freeze > requirments.txt")
+        subprocess.run(['python', '-m', 'pipenv', 'install', '-r', file])
+        os.system("python -m pipenv run pip freeze > "+file)
+    #os.system("python -m pipenv run pip freeze > requirments.txt")
     #subprocess.run(['pipenv', 'install', '-r', 'requirments.txt'])
-    #subprocess.run(['python', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
+    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
 
-def install(package):#python install <name(s)>
-    os.system("python install "+package)
+def install(package):#python -m pipenv install <name(s)>
+    os.system("python -m pipenv install "+package)
     #subprocess.run(['pipenv', 'install', package])
-    os.system("python -m pip freeze > requirments.txt")
-    #os.system("python run pip freeze > requirments.txt")
-    #subprocess.run(['python', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
+    os.system("python -m pipenv run pip freeze > requirments.txt")
+    #os.system("python -m pipenv run pip freeze > requirments.txt")
+    #subprocess.run(['python', '-m', 'pipenv', 'run', 'pip', 'freeze', '>', 'requirments.txt'])
 
-def createProject(name):#python run django-admin startproject <name>
-    # subprocess.run(['django-admin', 'startproject', name])
-    os.system(f"django-admin startproject {name}")
+def createProject(name):#python -m pipenv run django-admin startproject <name>
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'django-admin', 'startproject', name])
     os.rename(name, 'src')
     touch(os.path.join("src", name, "password.py"), content="from credentials.credentials import credentials\n\ndef fetch(argument):\n    return credentials.get(argument)")
     lines = []
@@ -65,10 +64,9 @@ def createProject(name):#python run django-admin startproject <name>
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
 
-def createApp(projName, appName):#python  run django-admin startapp <name>
+def createApp(projName, appName):#python -m pipenv run django-admin startapp <name>
     os.chdir('src')
-    # subprocess.run(['django-admin', 'startapp', appName])
-    os.system(f"django-admin startapp {appName}")
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'django-admin', 'startapp', appName])
     os.chdir('..')
     #registerApp(projName, appName)
 
@@ -87,28 +85,39 @@ def registerApp(projName, appName):#
 def makeFolder(folderName):#
     os.mkdir(folderName)
 
-def setup(username=None, password=None, email=None):#
-    # subprocess.run(['python', 'sync'])
-    subprocess.run(['python', os.path.join("src", "manage.py"), 'makemigrations', '-v', '0'])
-    subprocess.run(['python', os.path.join("src", "manage.py"), 'migrate', '-v', '0'])
-    subprocess.run(['python', os.path.join("src", "manage.py"), 'collectstatic', '-v', '0'])
-
+def setup():#
+    subprocess.run(['python', '-m', 'pipenv', 'sync'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'makemigrations'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'migrate'])
+    subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'collectstatic'])
+    try:
+        username = config.get("SETTINGS", "username")
+    except Exception as e:
+        username = ""
+    try:
+        password = config.get("SETTINGS", "password")
+    except Exception as e:
+        password = ""
+    try:
+        email = config.get("SETTINGS", "email")
+    except Exception as e:
+        email = ""
     if username and password and email:
-        findReplaceAt(os.path.join("src", "main", "settings.py"), "DJANGO_SUPERUSER_PASSWORD='space'\n", f"DJANGO_SUPERUSER_PASSWORD='{password}'\n", 1)
-        # subprocess.run(['python', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--username='+username, '--email='+email])
-        subprocess.run(['python', os.path.join("src", "manage.py"), 'createsuperuser', '--no-input', '--username='+username, '--email='+email])
-        findReplaceAt(os.path.join("src", "main", "settings.py"), f"DJANGO_SUPERUSER_PASSWORD='{password}'\n", "DJANGO_SUPERUSER_PASSWORD='space'\n", 1)
+        findReplaceAt('.env', 'DJANGO_SUPERUSER_PASSWORD=password\n', 'DJANGO_SUPERUSER_PASSWORD='+password+'\n', 1)
+        # subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--username='+username, '--email='+email])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--no-input', '--username='+username, '--email='+email])
+        findReplaceAt('.env', 'DJANGO_SUPERUSER_PASSWORD='+password+'\n', 'DJANGO_SUPERUSER_PASSWORD=password\n', 1)
     else:
         print('Enter following details for root user')
-        subprocess.run(['python', os.path.join("src", "manage.py"), 'createsuperuser'])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser'])
 
 def run(option):
     if option == "0":
-        subprocess.run(['python', os.path.join("src", "manage.py"), 'runserver'])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runserver'])
     elif option == "1":
-        subprocess.run(['python', os.path.join("src", "manage.py"), 'runsslserver'])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runsslserver'])
     elif option == "2":
-        subprocess.run(['python', os.path.join("src", "manage.py"), 'runsslserver', '0.0.0.0:8000'])
+        subprocess.run(['python', '-m', 'pipenv', 'run', 'python', os.path.join("src", "manage.py"), 'runsslserver', '0.0.0.0:8000'])
 
 def setupUrl(name, appName):
     lines = []
@@ -224,7 +233,6 @@ def secure(name):
     lines[-1] = lines[-1]+"\n# REST_FRAMEWORK = {\n#\t'DEFAULT_AUTHENTICATION_CLASSES':"
     lines[-1] = lines[-1]+"[\n#\t\t# 'rest_framework.authentication.TokenAuthentication',"
     lines[-1] = lines[-1]+"\n#\t\t'knox.auth.TokenAuthentication',\n#\t],\n# }"
-    lines[-1] = lines[-1]+"\nDJANGO_SUPERUSER_PASSWORD='space'\n"
 
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
