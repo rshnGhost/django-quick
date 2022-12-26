@@ -45,7 +45,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JRqZX'))
 ```
 
 ## Using PyPI
-[![Tests (windows)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_windows.yml/badge.svg)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_windows.yml) [![Tests (ubuntu)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_ubuntu.yml/badge.svg)](https://github.com/rshnGhost/space_setup/actions/workflows/tests_ubuntu.yml)
+[![Tests (ubuntu)](https://github.com/rshnGhost/django-space/actions/workflows/tests_ubuntu.yml/badge.svg)](https://github.com/rshnGhost/django-space/actions/workflows/tests_ubuntu.yml) [![Tests (windows)](https://github.com/rshnGhost/django-space/actions/workflows/tests_windows.yml/badge.svg)](https://github.com/rshnGhost/django-space/actions/workflows/tests_windows.yml)
 
 ```markdown
 pip install django-space
