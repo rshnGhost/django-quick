@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    name: Windows, Python
+    steps:
+      - name: Set up Python
+        uses: actions/checkout@v2
+
+      - name: Install and upgrade packaging tools
+        run: python -m pip install --upgrade pip
+
+      - run: python -m pip install pipenv
+      - run: python -m pipenv install
+      - run: python -m pipenv shell
+      - run: cd windowCmd
+      - run: "2 setup.bat"
