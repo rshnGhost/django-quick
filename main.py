@@ -33,7 +33,8 @@ def setup_quick():
         # os.remove("setup-django-sslserver.py")
     except:
         pass
-    os.system("python main-setup.py --run 2")
+    # os.system("python main-setup.py --run 2") # ssl server not working
+    os.system("python main-setup.py --run 0")
 
 if __name__ == '__main__':
     setup_quick()

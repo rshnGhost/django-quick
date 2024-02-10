@@ -7,8 +7,8 @@ config.read(filename)
 
 def touch(file, content=''):
     lines=[]
-    content = content.replace("\\n", "\n")
-    lines = content.replace("\\t", "\t")
+    content = content.replace(r"\n", "\n")
+    lines = content.replace(r"\t", "\t")
     with open(file, 'w') as fp:
         fp.writelines(lines)
 
@@ -60,7 +60,8 @@ def createProject(name):#python run django-admin startproject <name>
     lines[index] = lines[index]+"\nLOGIN_REDIRECT_URL = '/'\n"
     lines[index] = lines[index]+"SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'\n"
     lines[index] = lines[index]+"SESSION_EXPIRE_AT_BROWSER_CLOSE = True\n"
-    lines[index] = lines[index]+"CRISPY_TEMPLATE_PACK = 'bootstrap4'"
+    lines[index] = lines[index]+"CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'\n"
+    lines[index] = lines[index]+"CRISPY_TEMPLATE_PACK = 'bootstrap5'\n"
 
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
@@ -94,20 +95,31 @@ def setup(username=None, password=None, email=None):#
     subprocess.run(['python', os.path.join("src", "manage.py"), 'collectstatic', '-v', '0'])
 
     if username and password and email:
-        findReplaceAt(os.path.join("src", "main", "settings.py"), "DJANGO_SUPERUSER_PASSWORD='space'\n", f"DJANGO_SUPERUSER_PASSWORD='{password}'\n", 1)
+        os.environ["DJANGO_SUPERUSER_PASSWORD"] = password
         # subprocess.run(['python', 'run', 'python', os.path.join("src", "manage.py"), 'createsuperuser', '--username='+username, '--email='+email])
         subprocess.run(['python', os.path.join("src", "manage.py"), 'createsuperuser', '--no-input', '--username='+username, '--email='+email])
-        findReplaceAt(os.path.join("src", "main", "settings.py"), f"DJANGO_SUPERUSER_PASSWORD='{password}'\n", "DJANGO_SUPERUSER_PASSWORD='space'\n", 1)
     else:
         print('Enter following details for root user')
         subprocess.run(['python', os.path.join("src", "manage.py"), 'createsuperuser'])
 
 def run(option):
     if option == "0":
+        try:
+            findReplaceAt(os.path.join("src", "main", "settings.py"), "SECURE_SSL_REDIRECT = True\n", "SECURE_SSL_REDIRECT = False\n", 1)
+        except:
+            pass
         subprocess.run(['python', os.path.join("src", "manage.py"), 'runserver'])
     elif option == "1":
+        try:
+            findReplaceAt(os.path.join("src", "main", "settings.py"), "SECURE_SSL_REDIRECT = False\n", "SECURE_SSL_REDIRECT = True\n", 1)
+        except:
+            pass
         subprocess.run(['python', os.path.join("src", "manage.py"), 'runsslserver'])
     elif option == "2":
+        try:
+            findReplaceAt(os.path.join("src", "main", "settings.py"), "SECURE_SSL_REDIRECT = False\n", "SECURE_SSL_REDIRECT = True\n", 1)
+        except:
+            pass
         subprocess.run(['python', os.path.join("src", "manage.py"), 'runsslserver', '0.0.0.0:8000'])
 
 def setupUrl(name, appName):
@@ -224,21 +236,20 @@ def secure(name):
     lines[-1] = lines[-1]+"\n# REST_FRAMEWORK = {\n#\t'DEFAULT_AUTHENTICATION_CLASSES':"
     lines[-1] = lines[-1]+"[\n#\t\t# 'rest_framework.authentication.TokenAuthentication',"
     lines[-1] = lines[-1]+"\n#\t\t'knox.auth.TokenAuthentication',\n#\t],\n# }"
-    lines[-1] = lines[-1]+"\nDJANGO_SUPERUSER_PASSWORD='space'\n"
 
     with open(os.path.join("src", name, "settings.py"), 'w') as fp:
         fp.writelines(lines)
 
 def findReplaceAt(location, search, replace, option=0):
     lines = []
-    search = search.replace("\\n", "\n")
-    search = search.replace("\\t", "\t")
-    search = search.replace("\(", "(")
-    search = search.replace("\)", ")")
-    replace = replace.replace("\\n", "\n")
-    replace = replace.replace("\\t", "\t")
-    replace = replace.replace("\(", "(")
-    replace = replace.replace("\)", ")")
+    search = search.replace(r"\n", "\n")
+    search = search.replace(r"\t", "\t")
+    search = search.replace(r"(", "(")
+    search = search.replace(r")", ")")
+    replace = replace.replace(r"\n", "\n")
+    replace = replace.replace(r"\t", "\t")
+    replace = replace.replace(r"(", "(")
+    replace = replace.replace(r")", ")")
     with open(location, 'r') as fp:
         lines = fp.readlines()
     if option == 0:

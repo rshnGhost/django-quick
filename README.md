@@ -1,6 +1,6 @@
 ## Django Quick
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rshnGhost/django-quick?style=plastic)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/rshnGhost/django-quick/django-4.1.4?style=plastic)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/rshnGhost/django-quick/django-5.0.2?style=plastic)
 [![powerShell](https://github.com/rshnGhost/django-quick/actions/workflows/powershell-app.yml/badge.svg)](https://github.com/rshnGhost/django-quick/actions/workflows/powershell-app.yml)
 
 A simple django with ssl, project which should be exended to future website as needed.
@@ -33,11 +33,11 @@ Set-ExecutionPolicy Bypass -Scope Process
 ```
 
 ```markdown
-iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1'))
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/rshnGhost/django-quick/django-5.0.2/windowCmd/webInstall.ps1'))
 ```
 
 ```markdown
-iwr -useb https://raw.githubusercontent.com/rshnGhost/django-quick/django-4.1.4/windowCmd/webInstall.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/rshnGhost/django-quick/django-5.0.2/windowCmd/webInstall.ps1 | iex
 ```
 
 ```markdown

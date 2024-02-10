@@ -80,7 +80,7 @@ function installPython{
 
 getAdmin
 createTempFolder
-$fName = 'django-4.1.4'
+$fName = 'django-5.0.2'
 $pName = 'django-quick'
 $sha = getSha
 $dName = $pName+'-'+$sha

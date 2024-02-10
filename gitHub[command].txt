@@ -1,13 +1,13 @@
 git init
 git pull https://github.com/rshnGhost/eSpace-lazy.git
 git remote add origin https://github.com/rshnGhost/eSpace-lazy.git
-git branch -m django-4.1.4
+git branch -m django-5.0.2
 git branch -a
 git status
 git add .
 git commit -m %1
-git switch django-4.1.4
-git push origin django-4.1.4
+git switch django-5.0.2
+git push origin django-5.0.2
 
 python src\manage.py dumpdata --indent=4 > dumped_data.json
 python src\manage.py loaddata dumped_data.json
